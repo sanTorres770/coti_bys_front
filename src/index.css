@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.3));
+}
+
+.sk-cube-grid {
+    width: 80px;
+    height: 80px;
+    margin: 40px auto;
+}
+
+.sk-cube-grid .sk-cube {
+    width: 33%;
+    height: 33%;
+    background-color: #054888;
+    float: left;
+    -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+    animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+}
+.sk-cube-grid .sk-cube1 {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube2 {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube3 {
+    -webkit-animation-delay: 0.4s;
+    animation-delay: 0.4s; }
+.sk-cube-grid .sk-cube4 {
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube5 {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube6 {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube7 {
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s; }
+.sk-cube-grid .sk-cube8 {
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube9 {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s; }
+
+.sk-cube-grid .sk-loading-message {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s; }
+
+@-webkit-keyframes sk-cubeGridScaleDelay {
+    0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+    } 35% {
+          -webkit-transform: scale3D(0, 0, 1);
+          transform: scale3D(0, 0, 1);
+      }
+}
+
+@keyframes sk-cubeGridScaleDelay {
+    0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+    } 35% {
+          -webkit-transform: scale3D(0, 0, 1);
+          transform: scale3D(0, 0, 1);
+      }
+}
+
+
+/*loading-message*/
+
+.message-div {
+    width: 800px;
+    height: 80px;
+    margin: 10px auto;
+}
+
+
+.message-div .message-field {
+    width: 33%;
+    height: 80%;
+    background-color: transparent;
+    -webkit-animation: loading-message 4s infinite ease-in-out;
+    animation: loading-message 4s infinite ease-in-out;
+}
+
+@-webkit-keyframes loading-message {
+    80%, 90%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+    } 50% {
+          -webkit-transform: scale3D(0, 1, 1);
+          transform: scale3D(0, 1, 1);
+      }
+}
+
+@keyframes loading-message {
+    80%, 90%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+    } 50% {
+          -webkit-transform: scale3D(0, 1, 1);
+          transform: scale3D(0, 1, 1);
+      }
+}
+
+
+/* transition component */
+
+.fade-enter{
+    opacity: 0;
+}
+.fade-exit{
+    opacity: 1;
+}
+.fade-enter-active{
+    opacity: 1;
+}
+.fade-exit-active{
+    opacity: 0;
+}
+
+.fade-enter-active{
+    transition: opacity 500ms;
+}
+
+.fade-exit-active{
+    transition: opacity 10ms;
+}
+
+/* dropdown transition*/
+
+.dropdown-menu.active{
+    opacity: 1;
+    transform: translateY(0);
+    transition: 500ms ease;
+}
+
+.dropdown-menu.inactive{
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: 500ms ease;
+}
+
+
+
+.icon-filter.active{
+    transform: rotate(360deg);
+    transition: 500ms ease;
+}
+
+.icon-filter.inactive{
+    transform: rotate(180deg);
+    transition: 500ms ease;
+}
+
