@@ -1,126 +1,50 @@
 import {Outlet} from "react-router-dom";
 import Sidebar from "../../components/layout/Sidebar.jsx";
-import {useAuth} from "../../hooks/useAuth.js";
+/*import {useAuth} from "../../hooks/useAuth.js";*/
 import {ToastContainer} from "react-toastify";
-import {SwitchTransition, CSSTransition} from "react-transition-group"
 import "react-toastify/dist/ReactToastify.css"
 import useApp from "../../hooks/useApp.js";
-import Modal from "react-modal"
-import AssignationsModal from "../../components/modal/AssignationsModal.jsx";
-import SchedulingServiceModal from "../../components/modal/SchedulingServiceModal.jsx";
-import FinishServiceModal from "../../components/modal/FinishServiceModal.jsx";
-import {useRef} from "react";
-import SidebarLite from "../../components/layout/SidebarLite.jsx";
+import Navigation from "../../components/layout/Navigation.jsx";
+import {Transition} from "@headlessui/react";
 
-Modal.setAppElement('#root')
 
 export default function Layout() {
 
-    const {user, error} = useAuth({middleware:'auth'})
-    const {assignationsModal,
-        handleClickAssignationsModal,
-        schedulingServiceModal,
-        handleClickSchedulingServiceModal,
-        finishServiceModal,
-        handleClickFinishServiceModal,
-        sidebarVisible
-    } = useApp()
+    /*const {user, error} = useAuth({middleware:'auth'})*/
+    const {sidebarVisible} = useApp()
 
-    const customStyles = {
-        content:{
-            top: "50%",
-            left: "50%",
-            right: "auto",
-            bottom: "auto",
-            marginRight: "-50%",
-            transform: "translate(-50%,-50%)",
-            padding: '10px',
-            backgroundColor: 'rgba(58,73,94,0.96)',
-        },
-    }
-
-    const notVisibleRef = useRef(null);
-    const visibleRef = useRef(null);
-    const notVisible2Ref = useRef(null);
-    const visible2Ref = useRef(null);
-    const nodeRef = sidebarVisible ? notVisibleRef : visibleRef;
-    const node2Ref = sidebarVisible ? notVisible2Ref : visible2Ref;
 
     return (
 
         <>
 
-            <div className='md:flex'>
+            {sidebarVisible &&
 
-                <SwitchTransition mode={'out-in'}>
-                    <CSSTransition
-                        key={sidebarVisible}
-                        nodeRef={nodeRef}
-                        addEndListener={(done) => nodeRef.current.addEventListener("transitionend", done, false)}
-                        classNames='fade'
-                    >
-                        <div ref={nodeRef}>
-                            {sidebarVisible && <Sidebar/>}
-                        </div>
+                <Transition
+                    appear={'div'}
+                    show={true}
+                    enter="transition-opacity duration-300"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="transition-opacity duration-150"
+                    leaveFrom="opacity-100"
+                    leaveTo="-translate-x-full"
+                >
 
-                    </CSSTransition>
-                </SwitchTransition>
-
-
-                <div className='md:w-10 bg-gray-900 w-full'>
-                    <div className='md:mt-2'>
-
-                        <SwitchTransition mode={'out-in'}>
-                            <CSSTransition
-                                key={sidebarVisible}
-                                nodeRef={node2Ref}
-                                addEndListener={(done) => node2Ref.current.addEventListener("transitionend", done, false)}
-                                classNames='fade'
-                            >
-                                <div ref={node2Ref}>
-                                    <SidebarLite/>
-                                </div>
-
-                            </CSSTransition>
-                        </SwitchTransition>
-
-
+                    <div>
+                        <Sidebar/>
                     </div>
-                </div>
 
-                <main className='flex-1'>
+                </Transition>
+            }
 
-                    <div className='md:my-5 md:mx-5 my-1 mx-1 p-5 rounded-xl border-2'>
+            <main className={`w-full md:w-[calc(100%-256px)] ${sidebarVisible ? 'md:ml-64' : 'md:ml-0 md:w-full'} pb-4 bg-gray-200 min-h-screen transition-all`}>
 
-                        <div className="border-b-4 border-gray-900/10 pb-12">
+                <Navigation/>
 
-                            <Outlet/>
+                <Outlet/>
 
-                        </div>
-                    </div>
-                </main>
-
-            </div>
-
-
-
-            <Modal isOpen={assignationsModal} style={customStyles} overlayClassName='Overlay'>
-
-                <AssignationsModal closeFunction={handleClickAssignationsModal} title={'Asignación de personal técnico'}></AssignationsModal>
-
-            </Modal>
-
-            <Modal isOpen={schedulingServiceModal} style={customStyles} overlayClassName='Overlay'>
-
-                <SchedulingServiceModal closeFunction={handleClickSchedulingServiceModal} title={'Fecha de prevista para la atención del servicio'}></SchedulingServiceModal>
-
-            </Modal>
-
-            <Modal isOpen={finishServiceModal} style={customStyles} overlayClassName='Overlay'>
-
-                <FinishServiceModal closeFunction={handleClickFinishServiceModal} title={'Finalizar la atención del servicio'}></FinishServiceModal>
-
-            </Modal>
+            </main>
 
             <ToastContainer/>
 

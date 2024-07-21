@@ -1,3 +1,4 @@
+/*
 import customAxios from "../config/axios.js";
 import useSWR from "swr";
 import {useEffect, useState} from "react";
@@ -119,4 +120,4 @@ export const useAuth = ({middleware, url}) => {
         user,
         error
     }
-}
+}*/

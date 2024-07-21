@@ -1,13 +1,13 @@
 import {Link} from "react-router-dom";
 import {useServiceRequests} from "../../hooks/useServiceRequests.js";
-import {serviceRequestRowConfig} from "../../hooks/serviceRequestRowConfig.js";
+import {commonConfig} from "../../hooks/commonConfig.js";
 
 export default function ServiceRequestRow({service, isAdmin}) {
 
 
     const {service_request_id, request_date, business_name, finished, progress, state} = service
     const {handleServiceSelected} = useServiceRequests();
-    const {serviceState, progressColor} = serviceRequestRowConfig()
+    const {serviceState, progressColor} = commonConfig()
 
     const customerField = () => {
         return <div className='md:p-6 sm:p-5 p-1 border-r-2 border-gray-600 md:w-1/5 text-center md:block sm:block hidden'>

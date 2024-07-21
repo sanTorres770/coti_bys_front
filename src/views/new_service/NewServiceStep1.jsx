@@ -1,21 +1,21 @@
 import useApp from "../../hooks/useApp.js";
 import {createRef, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-import {useAuth} from "../../hooks/useAuth.js";
+/*import {useAuth} from "../../hooks/useAuth.js";*/
 import InputForm from "../../components/layout/InputForm.jsx";
 import SelectForm from "../../components/layout/SelectForm.jsx";
 
 export default function NewServiceStep1() {
 
     const {countries, states, towns, handleSelectState, handleSelectTown, handleSaveForm1, form1:serviceRequest, validationErrors} = useApp();
-    const { user } = useAuth({
+    /*const { user } = useAuth({
         middleware: 'auth',
         url: '/'
-    })
+    })*/
 
-    serviceRequest["contactName"] === undefined && (serviceRequest["contactName"] = user ? user.name : null)
+    /*serviceRequest["contactName"] === undefined && (serviceRequest["contactName"] = user ? user.name : null)
     serviceRequest["contactTelephone"] === undefined && (serviceRequest["contactTelephone"] = user ? user.telephone : null)
-    serviceRequest["contactEmail"] === undefined && (serviceRequest["contactEmail"] = user ? user.email : null)
+    serviceRequest["contactEmail"] === undefined && (serviceRequest["contactEmail"] = user ? user.email : null)*/
 
 
     const navigate = useNavigate()
@@ -40,8 +40,8 @@ export default function NewServiceStep1() {
             serviceCountry: serviceCountryRef.current.value,
             serviceState: serviceStateRef.current.value,
             serviceTown: serviceTownRef.current.value,
-            customer: user.fk_customer,
-            user: user.id
+            /*customer: user.fk_customer,*/
+            /*user: user.id*/
         }
 
         handleSaveForm1(form)
@@ -103,7 +103,6 @@ export default function NewServiceStep1() {
                                bgLabelColor={'bg-gray-300'}
                                mediaQuery={'w-1/2'}>
                     </InputForm>
-
                 </div>
 
                 <div className="sm:col-span-3">

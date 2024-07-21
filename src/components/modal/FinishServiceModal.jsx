@@ -3,7 +3,7 @@ import useApp from "../../hooks/useApp.js";
 import customAxios from "../../config/axios.js";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
-import {useAuth} from "../../hooks/useAuth.js";
+/*import {useAuth} from "../../hooks/useAuth.js";*/
 import ValidationFormAlert from "../alerts/ValidationFormAlert.jsx";
 import {CSSTransition, SwitchTransition} from "react-transition-group";
 import AssignationRow from "../services/AssignationRow.jsx";
@@ -12,7 +12,7 @@ import TextAreaForm from "../layout/TextAreaForm.jsx";
 
 export default function FinishServiceModal({closeFunction, title}) {
 
-    const {user} = useAuth({middleware:'auth'})
+    /*const {user} = useAuth({middleware:'auth'})*/
     const [finishServiceAnswer, setFinishServiceAnswer] = useState('');
     const {serviceSelected,
         setFinishServiceModal} = useApp()

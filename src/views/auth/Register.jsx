@@ -1,7 +1,7 @@
 import {createRef, useEffect, useState} from "react";
 import ValidationFormAlert from "../../components/alerts/ValidationFormAlert.jsx";
 import useApp from "../../hooks/useApp.js";
-import {useAuth} from "../../hooks/useAuth.js";
+/*import {useAuth} from "../../hooks/useAuth.js";*/
 import {useCustomers} from "../../hooks/useCustomers.js";
 import SelectForm from "../../components/layout/SelectForm.jsx";
 import InputForm from "../../components/layout/InputForm.jsx";
@@ -24,10 +24,10 @@ export default function Register() {
 
     const {customers, getAllCustomers} = useCustomers()
 
-    const { registerCustomerUser, registerOperatorUser } = useAuth({
+    /*const { registerCustomerUser, registerOperatorUser } = useAuth({
         middleware: 'auth',
         url: '/'
-    })
+    })*/
 
     const [errores, setErrores] = useState([])
 

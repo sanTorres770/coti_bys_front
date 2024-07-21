@@ -1,57 +1,40 @@
 import Option from "../option/Option.jsx";
 import useApp from "../../hooks/useApp.js";
-import {useAuth} from "../../hooks/useAuth.js";
+/*import {useAuth} from "../../hooks/useAuth.js";*/
 import {Link} from "react-router-dom";
+import SidebarDisclosure from "../disclosure/SidebarDisclosure.jsx";
+import {useEffect} from "react";
 export default function Sidebar() {
 
-    const {options} = useApp();
+    const {sidebarVisible,handleClickSidebarVisibility,sidebarOptions,setSelectedSidebarOption} = useApp();
 
-    const {logout, user} = useAuth({middleware:'auth'})
+    /*const {logout, user} = useAuth({middleware:'auth'})*/
+
+    useEffect(() => {
+        setSelectedSidebarOption({})
+    }, []);
 
     return (
 
-        <div className='md:w-64 min-h-full md:p-2 pt-2 bg-gray-900'>
+        <>
 
-        <div className='flex p-4 mt-3 justify-center'>
-            <Link to={'/'}>
-                <img src="../../../logo-bys.png" alt="logo" className='w-40 text-center'/>
-            </Link>
-        </div>
-
-        <div className='bg-gray-800 w-full p-2 my-10 rounded border-b-4 border-gray-900'>
-
-            <div className='flex items-center gap-4 w-full p-1'>
-
-
-                <button type='button' onClick={logout}>
-                    <img className='w-16 rounded-full hover:shadow-lg hover:shadow-blue-400' src="../../../img/logout.png" alt="logout"/>
-                </button>
-
-                <p className='text-lg text-white font-bold flex-wrap truncate'>{user ? user.name.toUpperCase() : null}</p>
-
+            <div className="fixed left-0 top-0 w-64 h-full bg-indigo-600 p-4 z-50 transition-transform">
+                <div className="pb-5 border-b border-[#c7d2fe]">
+                    <Link to={'/'}>
+                        <h2 className="font-bold text-2xl text-white">COTI <span
+                            className="bg-[#f8f4f3] text-indigo-600 px-2 rounded-md">BYS</span></h2>
+                    </Link>
+                </div>
+                <ul className="mt-4">
+                    {/*<span className="text-gray-400 font-bold">ADMIN</span>*/}
+                    <li className="mb-1 group">
+                        <SidebarDisclosure options={sidebarOptions}></SidebarDisclosure>
+                    </li>
+                </ul>
             </div>
-
-        </div>
-
-        <div>
-            {options.map( option => (
-
-                <Option
-                    key= {option.id}
-                    option= {option}
-                    currentRole={user ? user.role: null}
-                />
-
-            ))}
-
-            <footer className="bg-gray-900 mt-10">
-                <p className='italic text-gray-700 text-center'>Centro de servicios</p>
-                <p className='italic text-gray-700 text-center'>©STP</p>
-            </footer>
-
-        </div>
-
-        </div>
+            <div className={`fixed top-0 left-0 w-full h-full bg-black/50 z-40 ${sidebarVisible ? 'md:hidden' : ''}`}
+                 onClick={() => handleClickSidebarVisibility()}></div>
+        </>
 
     )
 }

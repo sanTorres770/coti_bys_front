@@ -13,6 +13,16 @@ import AdminLayout from "./views/layouts/AdminLayout.jsx";
 import AllServicesList from "./views/services_list/AllServicesList.jsx";
 import ServiceData from "./components/services/ServiceData.jsx";
 import OperatorServicesList from "./views/services_list/OperatorServicesList.jsx";
+import QuotationLayout from "./views/layouts/QuotationLayout.jsx";
+import QuotationStep1 from "./views/quotations/QuotationStep1.jsx";
+import QuotationStep2 from "./views/quotations/QuotationStep2.jsx";
+import QuotationStep3 from "./views/quotations/QuotationStep3.jsx";
+import QuotationStep4 from "./views/quotations/QuotationStep4.jsx";
+import Dashboard from "./views/dashboard/Dashboard.jsx";
+import QuotationTableView from "./views/quotations/QuotationTableView.jsx";
+import QuotationDataView from "./views/quotations/QuotationDataView.jsx";
+import NewSupplyForm from "./views/supplies/NewSupplyForm.jsx";
+import NewBaggerProductForm from "./views/products/NewBaggerProductForm.jsx";
 
 const router = createBrowserRouter([
     {
@@ -22,6 +32,34 @@ const router = createBrowserRouter([
             {
                 index:true,
                 element: <Index/>
+            },
+            {
+                path: '/dashboard',
+                element: <Dashboard/>,
+            },
+            {
+                path: '/quotations/created',
+                element: <QuotationTableView/>,
+            },
+            {
+                path: '/quotations/sent',
+                element: <QuotationTableView/>,
+            },
+            {
+                path: '/quotations/all',
+                element: <QuotationTableView/>,
+            },
+            {
+                path: '/quotations/data',
+                element: <QuotationDataView/>,
+            },
+            {
+                path: '/supplies/create',
+                element: <NewSupplyForm/>,
+            },
+            {
+                path: '/baggerProduct/create',
+                element: <NewBaggerProductForm/>,
             },
             {
                 path: '/new',
@@ -79,6 +117,28 @@ const router = createBrowserRouter([
                 path: '/operator/services',
                 element: <OperatorServicesList/>
             }
+        ]
+    },
+    {
+        path: "/quot",
+        element: <QuotationLayout/>,
+        children: [
+            {
+                path: '/quot/step_1',
+                element: <QuotationStep1/>
+            },
+            {
+                path: '/quot/step_2',
+                element: <QuotationStep2/>
+            },
+            {
+                path: '/quot/step_3',
+                element: <QuotationStep3/>
+            },
+            {
+                path: '/quot/step_4',
+                element: <QuotationStep4/>
+            },
         ]
     },
     {

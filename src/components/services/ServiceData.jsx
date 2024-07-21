@@ -1,5 +1,5 @@
 import useApp from "../../hooks/useApp.js";
-import {useAuth} from "../../hooks/useAuth.js";
+/*import {useAuth} from "../../hooks/useAuth.js";*/
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import AssignationRow from "./AssignationRow.jsx";
@@ -7,11 +7,11 @@ import {useOperators} from "../../hooks/useOperators.js";
 import customAxios from "../../config/axios.js";
 import {toast} from "react-toastify";
 import ValidationFormAlert from "../alerts/ValidationFormAlert.jsx";
-import {serviceRequestRowConfig} from "../../hooks/serviceRequestRowConfig.js";
+import {commonConfig} from "../../hooks/commonConfig.js";
 import {CircularProgressbar, buildStyles} from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css';
-import Map from "../map/Map.jsx";
-import MapContainer from "../map/MapContainer.jsx";
+/*import Map from "../map/Map.jsx";*/
+/*import MapContainer from "../map/MapContainer.jsx";*/
 
 export default function ServiceData() {
 
@@ -29,14 +29,14 @@ export default function ServiceData() {
         evidencesList} = useApp()
 
 
-    const {user} = useAuth({middleware:'auth'})
+    /*const {user} = useAuth({middleware:'auth'})*/
     const navigate = useNavigate()
     const {getAllOperators} = useOperators()
     const [errores, setErrores] = useState([])
     const [progress, setProgress] = useState(0)
-    const {serviceState,progressColor} = serviceRequestRowConfig()
+    const {serviceState,progressColor} = commonConfig()
     const imagesPath = import.meta.env.VITE_API_URL
-    const apiGoogleMaps = import.meta.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+    /*const apiGoogleMaps = import.meta.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY*/
 
     const { service_request_id,
         request_date,
@@ -353,9 +353,7 @@ export default function ServiceData() {
                                 {`•${service_address ? service_address.toUpperCase() : service_address} - ${town_name} - ${state_name} / ${country_name}`}
                             </p>
 
-
-                            <MapContainer/>
-
+                            {/*<MapContainer/>*/}
 
                         </div>
                     )}

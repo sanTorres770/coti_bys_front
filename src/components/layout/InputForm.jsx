@@ -1,17 +1,33 @@
-export default function InputForm({inputId, reference, defaultValue, labelValue, validationErrors, mediaQuery, bgLabelColor, textColor, type, onChangeFunction, fontSize, textUppercase}) {
+export default function InputForm({inputId, reference, defaultValue, labelValue, validationErrors, type, onChangeFunction, textUppercase, additionalLabelLink, placeholder, readonly, onFocusFunction, preSpan, onBlurFunction}) {
     return (
-        <div className="relative z-0 w-full mb-6 group">
-            <input id={inputId ? inputId : null}
-                   type={type}
-                   className={`block px-2.5 pb-2.5 pt-4 w-full ${mediaQuery ? `md:${mediaQuery}` : null} ${fontSize ? fontSize : null} ${textColor} bg-transparent rounded-lg border-2 appearance-none shadow-md ${validationErrors ? 'border-red-600 shadow-red-600' : 'border-gray-600 shadow-gray-500'} focus:outline-none focus:ring-0 focus:border-blue-900 peer`}
-                   placeholder=" "
-                   onChange={onChangeFunction ? () => onChangeFunction() : null}
-                   ref={reference ? reference : null} defaultValue={defaultValue ? defaultValue : null}
-                   style={textUppercase ? {textTransform: 'uppercase'} : null}/>
-            <label className={`absolute text-sm ${validationErrors ? 'text-red-600' : 'text-gray-500'} duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] ${bgLabelColor} px-2 peer-focus:px-2 peer-focus:text-blue-700 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
-                   htmlFor={inputId ? inputId : null}>
-                {labelValue}
-            </label>
+        <div>
+            <div className="flex items-center justify-between">
+                <label
+                    className={`block text-sm ${validationErrors ? 'text-red-600' : ''} font-medium leading-6 text-gray-900`}
+                    htmlFor={inputId ? inputId : null}>
+                    {labelValue}
+                </label>
+                {additionalLabelLink && (
+                    <div className="text-sm">
+                        <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                            Crear una cuenta
+                        </a>
+                    </div>
+                )}
+            </div>
+            <div className={`flex w-full rounded-md ${validationErrors ? 'border-red-600 shadow-red-600' : ''} shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600`}>
+                {preSpan && (<span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">{preSpan}</span>)}
+                <input id={inputId ? inputId : null}
+                       type={type}
+                       className={`block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6`}
+                       placeholder={placeholder}
+                       onChange={onChangeFunction}
+                       ref={reference ? reference : null} defaultValue={defaultValue ? defaultValue : null}
+                       style={textUppercase ? {textTransform: 'uppercase'} : null}
+                       readOnly={readonly}
+                       onFocus={onFocusFunction}
+                       onBlur={onBlurFunction}/>
+            </div>
 
             {validationErrors && (<p className='text-sm text-red-900 mt-1'>{validationErrors}</p>)}
 

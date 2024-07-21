@@ -37,7 +37,6 @@ export default function NewServiceStep3() {
             setIsLoading(true)
             const {data} = await customAxios.post('/api/new/service_request',form)
 
-            console.log(data)
 
             if (data.response){
                 toast.success(data.message)

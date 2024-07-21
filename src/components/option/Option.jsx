@@ -11,7 +11,7 @@ export default function Option({option,currentRole}) {
     return (
 
 
-        roles.includes(currentRole) &&
+        /*roles.includes(currentRole) &&*/
 
         <Link onClick={()=> handleOptionClick(id)} type='button'
               className={`${currentOption.id === id ? 'bg-gray-800 shadow-sm shadow-blue-400' : 'bg-gray-900'} 

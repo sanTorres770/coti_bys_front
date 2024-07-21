@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import {createRef, useEffect, useState} from "react";
 import ValidationFormAlert from "../../components/alerts/ValidationFormAlert.jsx";
-import {useAuth} from "../../hooks/useAuth.js";
+import InputForm from "../../components/layout/InputForm.jsx";
+/*import {useAuth} from "../../hooks/useAuth.js";*/
 
 export default function Login() {
 
@@ -10,10 +11,10 @@ export default function Login() {
 
     const [errores, setErrores] = useState([])
 
-    const { login } = useAuth({
+    /*const { login } = useAuth({
          middleware: 'guest',
          url: '/'
-    })
+    })*/
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -36,34 +37,55 @@ export default function Login() {
 
 
     return (
+
         <>
-            <h1 className="text-4xl font-black">Iniciar Sesión</h1>
-            <p>Centro de servicios de Básculas y suministros</p>
 
-            <div className="bg-white shadow-md rounded-md mt-10 px-5 py-10">
-                <form onSubmit={handleSubmit} noValidate>
+            {errores ? errores.map((error, i) => <ValidationFormAlert key={i}>{error}</ValidationFormAlert>)  : null }
 
-                    {errores ? errores.map((error, i) => <ValidationFormAlert key={i}>{error}</ValidationFormAlert>)  : null }
-
-                    <div className="mb-4">
-                        <label className="text-slate-800" htmlFor="email">Correo electrónico:</label>
-                        <input type="email" id="email" className="mt-2 w-full p-3 bg-gray-50" name="email" placeholder="Correo electrónico" ref={emailRef}/>
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                <form className="space-y-6" action="#" method="POST">
+                    <div>
+                        <div className="mt-2">
+                            <InputForm
+                                inputId={'username'}
+                                type={'text'}
+                                labelValue={'Correo electrónico*'}
+                                textColor={'text-black'}>
+                            </InputForm>
+                        </div>
                     </div>
 
-                    <div className="mb-4">
-                        <label className="text-slate-800" htmlFor="password">Contraseña:</label>
-                        <input type="password" id="password" className="mt-2 w-full p-3 bg-gray-50" name="password" placeholder="Contraseña" ref={passwordRef}/>
+                    <div>
+                        <div className="mt-2">
+                            <InputForm
+                                inputId={'username'}
+                                type={'text'}
+                                labelValue={'Contraseña *'}
+                                textColor={'text-black'}
+                                additionalLabelLink={true}>
+                            </InputForm>
+                        </div>
                     </div>
 
-                    <input type="submit" value="Iniciar Sesión" className="bg-indigo-600 hover:bg-indigo-800 text-white w-full mt-5 p-3 uppercase font-bold cursor-pointer"/>
+                    <div>
+                        <button
+                            type="submit"
+                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                            Iniciar sesión
+                        </button>
+                    </div>
                 </form>
+
+                <p className="mt-10 text-center text-sm text-gray-500">
+                    Deseas cotizar nuestros servicios?{' '}
+                    <Link to="/quot/step_1" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                        Hazlo acá
+                    </Link>
+                </p>
             </div>
 
-            {/*<nav className="mt-5">
-                <Link to="/auth/register">
-                    ¿No tienes cuenta? Crea una
-                </Link>
-            </nav>*/}
+
         </>
     )
 }
