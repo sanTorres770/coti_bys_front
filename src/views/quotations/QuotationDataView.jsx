@@ -2,7 +2,7 @@ import useApp from "../../hooks/useApp.js";
 import {buildStyles, CircularProgressbar} from "react-circular-progressbar";
 import {commonConfig} from "../../hooks/commonConfig.js";
 import {Transition} from "@headlessui/react";
-import DashboardTable from "../../components/table/DashboardTable.jsx";
+import DashboardTable from "../../components/dashboard/DashboardTable.jsx";
 import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 
@@ -16,7 +16,8 @@ export default function QuotationDataView() {
         pneumaticSuppliesPriceResult,
         setSelectedVelocityServiceOption,
         setSelectedPackingMaterialServiceOption,
-        totalQuotationPrice} = useApp();
+        totalQuotationPrice,
+        getBaggerProductById} = useApp();
 
     const {formatPriceToCurrency} = commonConfig()
 
@@ -41,6 +42,12 @@ export default function QuotationDataView() {
         setSelectedPackingMaterialServiceOption(baggerQuotation.selectedBaggerProduct.packingMaterial)
 
         navigate('/baggerProduct/create')
+
+    }
+
+    const handleSelectBaggerProductData = (id) => {
+
+        getBaggerProductById(id)
 
     }
 
@@ -319,7 +326,7 @@ export default function QuotationDataView() {
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                             <DashboardTable
-                                tableTitle={'Insumos partes electrónica'}
+                                tableTitle={'Insumos partes control y eléctricas'}
                                 columnNames={columnNamesSuppliesTable}
                                 data={electronicSupplies}
                                 priceResult={electronicSuppliesPriceResult}
@@ -363,7 +370,7 @@ export default function QuotationDataView() {
                                         </td>
                                         <td className='py-2 border-b border-b-gray-50'>
                                             <span className='text-sm font-medium text-gray-400'>
-                                                Precio total
+                                                Precio total (IE+IN+PF)
                                             </span>
                                         </td>
                                     </tr>
@@ -371,10 +378,12 @@ export default function QuotationDataView() {
                                     <tbody>
                                     <tr>
                                         <td className="py-2 border-b border-b-gray-50">
-                                            <a href="#"
-                                               className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate">
+                                            <Link to={'/baggerProduct/edit'}
+                                                  onClick={() => handleSelectBaggerProductData(baggerProduct.id)}
+                                                  className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
+                                            >
                                                 {baggerProduct.name}
-                                            </a>
+                                            </Link>
                                         </td>
                                         <td className="py-2 border-b border-b-gray-50">
                                             <span className="text-gray-600 text-sm font-medium truncate">

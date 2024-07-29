@@ -1,4 +1,4 @@
-export default function TableHead({columnNames}) {
+export default function QuotationsTableHead({columnNames}) {
     return (
         <thead className="bg-gray-50">
         <tr>

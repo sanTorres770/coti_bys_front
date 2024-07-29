@@ -32,12 +32,11 @@ export default function Steps({option}) {
                 progress = 100
                 break
             }
-            case '/quot/step_3':
-            case '/quot/step_4': {
+            case '/quot/step_3':{
                 progress = 75
                 break
             }
-            case '/quot/step_5': {
+            case '/quot/step_4': {
                 progress = 100
                 break
             }

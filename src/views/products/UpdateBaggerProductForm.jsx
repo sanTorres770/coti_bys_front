@@ -11,35 +11,44 @@ import {commonConfig} from "../../hooks/commonConfig.js";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 
-export default function NewBaggerProductForm() {
+export default function UpdateBaggerProductForm() {
+
+    const {formatPriceToCurrency} = commonConfig()
 
     const {
         allSupplies,
         getAllSupplies,
         validationErrors,
-        serviceOptionsByType,
+        baggerProductData,
+        updateBaggerProduct,
         saveNewBaggerProduct,
+        serviceOptionsByType,
         selectedSidebarOption,
         getServiceOptionsByType,
+        baggerProductEditSupplies,
+        velocityServiceOptionEdit,
         setSelectedSidebarSubOption,
-        selectedVelocityServiceOption,
-        setSelectedVelocityServiceOption,
-        selectedPackingMaterialServiceOption,
-        setSelectedPackingMaterialServiceOption} = useApp();
+        setBaggerProductEditSupplies,
+        setVelocityServiceOptionEdit,
+        packingMaterialServiceOptionEdit,
+        setPackingMaterialServiceOptionEdit} = useApp();
 
     const navigate = useNavigate()
 
-    const {formatPriceToCurrency} = commonConfig()
+    const {id,
+        name,
+        velocity,
+        packingMaterial,
+        stainlessSteelPrice,
+        carbonSteelPrice
+        } = baggerProductData
 
     const productNameRef = createRef()
-    const inoxPriceRef = createRef()
-    const acPriceRef = createRef()
 
     const [inoxPrice, setInoxPrice] = useState(0)
     const [acPrice, setAcPrice] = useState(0)
     const [velocityOptions, setVelocityOptions] = useState([])
     const [packingMaterialOptions, setPackingMaterialOptions] = useState([])
-    const [assignedSupplies, setAssignedSupplies] = useState([])
     const [supplyAmounts, setSupplyAmounts] = useState([])
 
     const handleFocusOutUnitInoxInput = (e) => {
@@ -77,13 +86,12 @@ export default function NewBaggerProductForm() {
 
         setSupplyAmounts([])
 
-        assignedSupplies.map((supply,index) => {
+        baggerProductEditSupplies.map((supply,index) => {
 
 
             let supplyAmount = {
-                supply: {
-                    id: supply.id,
-                },
+                baggerProduct: baggerProductData,
+                supply: supply,
                 amount: document.getElementById(`amount_${index}`).value,
             }
 
@@ -91,21 +99,22 @@ export default function NewBaggerProductForm() {
         })
 
 
-        const newBaggerProduct = {
+        const baggerProductToEdit = {
+            id: id,
             name: productNameRef.current.value.toUpperCase(),
-            velocity: selectedVelocityServiceOption,
-            packingMaterial: selectedPackingMaterialServiceOption,
-            supplies: assignedSupplies,
+            velocity: velocityServiceOptionEdit,
+            packingMaterial: packingMaterialServiceOptionEdit,
+            supplies: baggerProductEditSupplies,
             stainlessSteelPrice: inoxPrice,
             carbonSteelPrice: acPrice,
             supplyAmounts: supplyAmounts,
             active: true
         }
 
-        saveNewBaggerProduct(newBaggerProduct).then((response)=>{
+        updateBaggerProduct(baggerProductToEdit,id).then((response) => {
 
             if (response){
-                toast.success('El producto de ensacadora se creó correctamente!')
+                toast.success('El producto se actualizó correctamente!')
 
                 const buttonToClose = document.getElementById(`sidebar_option_${selectedSidebarOption.id}`);
 
@@ -124,9 +133,16 @@ export default function NewBaggerProductForm() {
     }
 
     useEffect(() => {
+
         getServiceOptionsByType("BRUTA,DUPLEX,NETA,BANDA,TORNILLO,GRAVEDAD")
         getAllSupplies()
+
     }, []);
+
+    useEffect(() => {
+        setInoxPrice(stainlessSteelPrice)
+        setAcPrice(carbonSteelPrice)
+    }, [baggerProductData]);
 
     return (
 
@@ -145,10 +161,11 @@ export default function NewBaggerProductForm() {
                 <form className='w-full p-6' onSubmit={handleSubmit} noValidate>
                     <div className="space-y-10">
                         <div className="border-b border-gray-900/10">
-                            <h2 className="text-base font-semibold leading-7 text-gray-900">Creación de productos de
-                                ensacadora</h2>
+                            <h2 className="text-base font-semibold leading-7 text-gray-900">
+                                Editar producto de ensacadora
+                            </h2>
                             <p className="mt-1 text-sm leading-6 text-gray-600">
-                                Ingrese la información de los productos de ensacadora a fabricar.
+                                Actualice la información del producto de ensacadora a fabricar.
                             </p>
                             <div className="my-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
@@ -160,6 +177,8 @@ export default function NewBaggerProductForm() {
                                         labelValue={'Nombre del producto *'}
                                         reference={productNameRef}
                                         placeholder={'Nombre del producto'}
+                                        defaultValue={name}
+                                        textUppercase={true}
                                     >
                                     </InputForm>
                                 </div>
@@ -168,8 +187,8 @@ export default function NewBaggerProductForm() {
                                     <SelectListBox
                                         data={serviceOptionsByType.filter(option => ["BRUTA","DUPLEX","NETA"].includes(option.type))}
                                         labelText={'Velocidad *'}
-                                        selected={selectedVelocityServiceOption}
-                                        setSelected={setSelectedVelocityServiceOption}
+                                        selected={velocityServiceOptionEdit}
+                                        setSelected={setVelocityServiceOptionEdit}
                                         displayAttribute={'type'}
                                     >
                                     </SelectListBox>
@@ -179,8 +198,8 @@ export default function NewBaggerProductForm() {
                                     <SelectListBox
                                         data={serviceOptionsByType.filter(option => ["BANDA","TORNILLO","GRAVEDAD"].includes(option.type))}
                                         labelText={'Alimentador *'}
-                                        selected={selectedPackingMaterialServiceOption}
-                                        setSelected={setSelectedPackingMaterialServiceOption}
+                                        selected={packingMaterialServiceOptionEdit}
+                                        setSelected={setPackingMaterialServiceOptionEdit}
                                         displayAttribute={'type'}
                                     >
                                     </SelectListBox>
@@ -195,6 +214,7 @@ export default function NewBaggerProductForm() {
                                                onChangeFunction={handleChangeInoxPriceInput}
                                                onFocusFunction={handleFocusInInoxPriceInput}
                                                onBlurFunction={handleFocusOutUnitInoxInput}
+                                               defaultValue={stainlessSteelPrice !== undefined && formatPriceToCurrency(stainlessSteelPrice)}
                                     >
                                     </InputForm>
                                 </div>
@@ -208,6 +228,7 @@ export default function NewBaggerProductForm() {
                                                onChangeFunction={handleChangeAcPriceInput}
                                                onFocusFunction={handleFocusInAcPriceInput}
                                                onBlurFunction={handleFocusOutAcPriceInput}
+                                               defaultValue={carbonSteelPrice !== undefined && formatPriceToCurrency(carbonSteelPrice)}
                                     >
                                     </InputForm>
                                 </div>
@@ -229,15 +250,15 @@ export default function NewBaggerProductForm() {
                                                     displayAttribute={'description'}
                                                     displaySimpleAttribute={'reference'}
                                                     displayCompoundAttribute={['maker','name']}
-                                                    selected={assignedSupplies}
-                                                    setSelected={setAssignedSupplies}
+                                                    selected={baggerProductEditSupplies}
+                                                    setSelected={setBaggerProductEditSupplies}
                                                     placeholder={'Búsqueda de insumos'}
                                                     multiple={true}>
                                     </ComboboxSelect>
                                 </div>
 
                                 <div className="sm:col-span-3">
-                                    <AssignSupplyTable data={assignedSupplies}
+                                    <AssignSupplyTable data={baggerProductEditSupplies}
                                                        columnNames={[
                                                         {
                                                             id: '1',
@@ -268,7 +289,7 @@ export default function NewBaggerProductForm() {
                                     onClick={() => handleSubmit}
                                     className="flex w-full justify-center rounded-md bg-indigo-600 mt-0 md:mt-6 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 >
-                                Crear producto
+                                Actualizar producto
                                 </button>
                             </div>
 

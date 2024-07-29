@@ -1,7 +1,7 @@
 import {createRef, Fragment, useState} from "react";
 import {Button, Dialog, DialogPanel, DialogTitle, Transition, TransitionChild} from "@headlessui/react";
 import useApp from "../../hooks/useApp.js";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import InputForm from "../../components/layout/InputForm.jsx";
 import {ArrowLeftCircleIcon} from "@heroicons/react/20/solid/index.js";
 import SelectListBox from "../../components/layout/SelectListBox.jsx";
@@ -29,7 +29,8 @@ export default function QuotationStep4() {
         manufacturerMaterialAdditionalSelected,
         brandsSelected,
         serviceSelectedData,
-        saveNewBaggerQuotation} = useApp();
+        saveNewBaggerQuotation,
+        useBaggerQuotationsResult} = useApp();
 
     const businessNameRef = createRef()
     const contactNameRef = createRef()
@@ -37,7 +38,7 @@ export default function QuotationStep4() {
     const emailRef = createRef()
     const addressRef = createRef()
 
-    const [isOpen, setIsOpen] = useState(true)
+    const [isOpen, setIsOpen] = useState(false)
 
     const handleCountryChange = (country) => {
 
@@ -62,7 +63,6 @@ export default function QuotationStep4() {
         e.preventDefault()
 
         const form = {
-            consecutive: "Real",
             contact: {
                 businessName: businessNameRef.current.value,
                 contactName: contactNameRef.current.value,
@@ -87,7 +87,7 @@ export default function QuotationStep4() {
 
 
         saveNewBaggerQuotation(form)
-        //navigate('/new/step_3')
+
     }
 
 
@@ -103,47 +103,6 @@ export default function QuotationStep4() {
                     <ArrowLeftCircleIcon className="h-5 w-5" aria-hidden="true" />
                 </Button>
 
-                {/*<Transition appear show={isOpen}>
-                    <Dialog as="div" className="relative z-10 focus:outline-none" onClose={()=>setIsOpen(true)}>
-                        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                            <div className="flex min-h-full items-center justify-center p-4">
-                                <div className="fixed inset-0 bg-black/50" aria-hidden="true"/>
-                                <TransitionChild
-                                    enter="ease-out duration-300"
-                                    enterFrom="opacity-0 transform-[scale(95%)]"
-                                    enterTo="opacity-100 transform-[scale(100%)]"
-                                    leave="ease-in duration-200"
-                                    leaveFrom="opacity-100 transform-[scale(100%)]"
-                                    leaveTo="opacity-0 transform-[scale(95%)]"
-                                >
-                                    <DialogPanel
-                                        className="w-full max-w-md rounded-xl bg-indigo-600/60 p-6 backdrop-blur-2xl">
-                                        <DialogTitle as="h3" className="text-base/7 font-medium text-white">
-                                            Datos de contacto
-                                        </DialogTitle>
-                                        <p className="mt-2 text-sm/6 text-white/50">
-                                            Puedes validar otro correo electrónico de contacto si lo deseas.
-                                        </p>
-                                        <div className="flex justify-center mt-4">
-                                            <Button
-                                                className="inline-flex items-center me-1 gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
-                                                onClick={()=>setIsOpen(false)}
-                                            >
-                                                Dejarlo así
-                                            </Button>
-                                            <Button
-                                                className="inline-flex items-center ms-1 gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
-                                                onClick={() => handleValidateEmail()}
-                                            >
-                                                Validar otro
-                                            </Button>
-                                        </div>
-                                    </DialogPanel>
-                                </TransitionChild>
-                            </div>
-                        </div>
-                    </Dialog>
-                </Transition>*/}
             </>
 
             <Transition
@@ -263,13 +222,58 @@ export default function QuotationStep4() {
                     </div>
 
                     <div className="sm:col-span-1">
-                        <button
+                        <Button
                             type="submit"
-                            onClick={() => handleSubmit}
+                            onClick={(e)=> {
+                                setIsOpen(true)
+                                handleSubmit(e)
+                            }}
                             className="flex w-full justify-center rounded-md bg-indigo-600 mt-0 md:mt-6 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
                             Crear cotización
-                        </button>
+                        </Button>
+
+                        <Transition appear show={isOpen}>
+                            <Dialog as="div" className="relative z-10 focus:outline-none" onClose={()=>setIsOpen(false)}>
+                                <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                                    <div className="flex min-h-full items-center justify-center p-4">
+                                        <div className="fixed inset-0 bg-black/50" aria-hidden="true"/>
+                                        <TransitionChild
+                                            enter="ease-out duration-300"
+                                            enterFrom="opacity-0 transform-[scale(95%)]"
+                                            enterTo="opacity-100 transform-[scale(100%)]"
+                                            leave="ease-in duration-200"
+                                            leaveFrom="opacity-100 transform-[scale(100%)]"
+                                            leaveTo="opacity-0 transform-[scale(95%)]"
+                                        >
+                                            <DialogPanel
+                                                className="w-full max-w-md rounded-xl bg-indigo-600/60 p-6 backdrop-blur-2xl">
+                                                <DialogTitle as="h3" className="text-base/7 font-medium text-white">
+                                                    Confirmación!
+                                                </DialogTitle>
+                                                <p className="mt-2 text-sm/6 text-white/50">
+                                                    {useBaggerQuotationsResult ?
+                                                        'La cotización ha sido generada correctamente!. Presiona finalizar y la información ' +
+                                                        'será enviada al correo electrónico que nos indicaste lo más pronto posible.'
+                                                        :
+                                                        'Ha ocurrido un error al guardar la información. Si el error persiste, contacte a la linea de ' +
+                                                        'atención.'}
+                                                </p>
+                                                <div className="flex justify-center mt-4">
+                                                    <Link
+                                                        className="inline-flex items-center me-1 gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
+                                                        onClick={()=> setIsOpen(false)}
+                                                        to={'https://basculasysuministros.com'}>
+                                                        Finalizar
+                                                    </Link>
+                                                </div>
+                                            </DialogPanel>
+                                        </TransitionChild>
+                                    </div>
+                                </div>
+                            </Dialog>
+                        </Transition>
+
                     </div>
 
                 </form>

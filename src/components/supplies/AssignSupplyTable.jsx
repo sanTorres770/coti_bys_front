@@ -1,7 +1,8 @@
 import AssignSupplyTableRow from "./AssignSupplyTableRow.jsx";
 import AssignSupplyTableHead from "./AssignSupplyTableHead.jsx";
 
-export default function AssignSupplyTable({columnNames,data}) {
+export default function AssignSupplyTable({columnNames,data,viewDataPath}) {
+
     return (
         <div className="overflow-hidden overflow-x-auto rounded-lg border border-gray-200 shadow-md m-5">
             <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
@@ -11,7 +12,7 @@ export default function AssignSupplyTable({columnNames,data}) {
 
                     data.map((item,index) => (
 
-                    <AssignSupplyTableRow key={item.id} data={item} index={index}></AssignSupplyTableRow>
+                    <AssignSupplyTableRow key={item.id} data={item} index={index} viewDataPath={viewDataPath}></AssignSupplyTableRow>
 
                     ))
                 :

@@ -1,4 +1,4 @@
-import Table from "../../components/table/Table.jsx";
+import QuotationsTable from "../../components/quotations/QuotationsTable.jsx";
 import {columnNames} from "../../data/quotationsTableColumNames.js";
 import {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
@@ -51,7 +51,7 @@ export default function QuotationTableView() {
             leaveTo="opacity-0"
         >
 
-            <Table columnNames={columnNames} data={filteredQuotations}></Table>
+            <QuotationsTable columnNames={columnNames} data={filteredQuotations} viewDataPath={'/quotations/data'}></QuotationsTable>
 
         </Transition>
     );

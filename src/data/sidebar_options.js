@@ -46,7 +46,7 @@ const sidebarOptions = [
             },
             {
                 id: '5',
-                name: 'Listar todos',
+                name: 'Editar insumo',
                 path: '/supplies/list',
 
             }

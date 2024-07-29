@@ -1,15 +1,15 @@
-import TableHead from "./TableHead.jsx";
-import TableRow from "./TableRow.jsx";
+import QuotationsTableHead from "./QuotationsTableHead.jsx";
+import QuotationsTableRow from "./QuotationsTableRow.jsx";
 
-export default function Table({columnNames,data}) {
+export default function QuotationsTable({columnNames,data,viewDataPath}) {
     return (
         <div className="overflow-hidden overflow-x-auto rounded-lg border border-gray-200 shadow-md m-5">
             <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
-                <TableHead columnNames={columnNames}></TableHead>
+                <QuotationsTableHead columnNames={columnNames}></QuotationsTableHead>
                 <tbody className="divide-y divide-gray-100 border-t border-gray-100">
                 {data.map(item => (
 
-                    <TableRow key={item.id} data={item}></TableRow>
+                    <QuotationsTableRow key={item.id} data={item} viewDataPath={viewDataPath}></QuotationsTableRow>
 
                 ))}
                 </tbody>

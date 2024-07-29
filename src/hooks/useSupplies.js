@@ -7,16 +7,19 @@ export const useSupplies = () => {
 
     const saveNewSupply = async (newSupply) => {
 
+        let response;
+
         try {
 
             const {data} = await customAxios.post('/api/supplies',newSupply)
 
-            console.log(data)
-
+            response = data
 
         }catch (error) {
             console.log(error)
         }
+
+        return response
 
     }
 
@@ -35,11 +38,45 @@ export const useSupplies = () => {
 
     }
 
+    const getSupplyById = async (id) => {
+
+        try {
+
+            const {data} = await customAxios(`/api/supplies/${id}`)
+
+
+        }catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    const updateSupply = async (supply,id) => {
+
+        let response;
+
+        try {
+
+            const {data} = await customAxios.put(`/api/supplies/${id}`,supply)
+
+            response = data
+
+        }catch (error) {
+            console.log(error)
+        }
+
+        return response
+
+    }
+
+
 
     return {
         saveNewSupply,
         getAllSupplies,
-        allSupplies
+        allSupplies,
+        getSupplyById,
+        updateSupply
     }
 
 }

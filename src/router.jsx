@@ -23,6 +23,9 @@ import QuotationTableView from "./views/quotations/QuotationTableView.jsx";
 import QuotationDataView from "./views/quotations/QuotationDataView.jsx";
 import NewSupplyForm from "./views/supplies/NewSupplyForm.jsx";
 import NewBaggerProductForm from "./views/products/NewBaggerProductForm.jsx";
+import BaggerProductsTableView from "./views/products/BaggerProductsTableView.jsx";
+import UpdateBaggerProductForm from "./views/products/UpdateBaggerProductForm.jsx";
+import UpdateSupplyForm from "./views/supplies/UpdateSupplyForm.jsx";
 
 const router = createBrowserRouter([
     {
@@ -58,8 +61,20 @@ const router = createBrowserRouter([
                 element: <NewSupplyForm/>,
             },
             {
+                path: '/supplies/list',
+                element: <UpdateSupplyForm/>,
+            },
+            {
                 path: '/baggerProduct/create',
                 element: <NewBaggerProductForm/>,
+            },
+            {
+                path: '/baggerProduct/list',
+                element: <BaggerProductsTableView/>,
+            },
+            {
+                path: '/baggerProduct/edit',
+                element: <UpdateBaggerProductForm/>,
             },
             {
                 path: '/new',

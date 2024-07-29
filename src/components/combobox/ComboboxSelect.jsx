@@ -3,7 +3,7 @@ import { CheckIcon, ChevronDownIcon} from '@heroicons/react/20/solid'
 import clsx from 'clsx'
 import { useState } from 'react'
 
-export default function ComboboxSelect({data,queryAttribute,displayAttribute,displayCompoundAttribute,displaySimpleAttribute,selected,setSelected,placeholder}) {
+export default function ComboboxSelect({data,queryAttribute,displayAttribute,displayCompoundAttribute,displaySimpleAttribute,selected,setSelected,placeholder,multiple}) {
 
     const [query, setQuery] = useState('')
 
@@ -16,7 +16,7 @@ export default function ComboboxSelect({data,queryAttribute,displayAttribute,dis
 
     return (
         <div>
-            <Combobox multiple virtual={{options: filteredData}} value={selected} onChange={(value) => setSelected(value)} onClose={() => setQuery('')}>
+            <Combobox multiple={multiple} value={selected} onChange={(value) => setSelected(value)} onClose={() => setQuery('')}>
                 <div className="relative">
                     <ComboboxInput
                         className={clsx(
@@ -33,14 +33,14 @@ export default function ComboboxSelect({data,queryAttribute,displayAttribute,dis
                 </div>
 
                 <ComboboxOptions
-                    anchor="bottom"
+                    anchor="bottom end"
                     transition='true'
                     className={clsx(
-                        'w-[var(--input-width)] rounded-xl border border-gray-500/10 bg-white p-1 [--anchor-gap:var(--spacing-1)] empty:invisible',
+                        'w-[var(--input-width)] rounded-xl border-2 border-gray-500/10 bg-white p-1 [--anchor-gap:var(--spacing-1)] empty:invisible',
                         'transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0'
                     )}
                 >
-                    {({option: item}) => (
+                    {filteredData.map((item) => (
                         <ComboboxOption
                             key={item.id}
                             value={item}
@@ -52,7 +52,7 @@ export default function ComboboxSelect({data,queryAttribute,displayAttribute,dis
                                 {displayCompoundAttribute && (<span>{` - ${item[displayCompoundAttribute[0]][displayCompoundAttribute[1]]}`}</span>)}
                             </div>
                         </ComboboxOption>
-                    )}
+                    ))}
                 </ComboboxOptions>
             </Combobox>
         </div>

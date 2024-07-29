@@ -2,6 +2,7 @@ import {Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/react'
 import {ChevronRightIcon} from '@heroicons/react/20/solid'
 import useApp from "../../hooks/useApp.js";
 import {Link} from "react-router-dom";
+import {useEffect} from "react";
 
 export default function SidebarDisclosure({options}) {
 

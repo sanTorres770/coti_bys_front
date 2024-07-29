@@ -52,7 +52,7 @@ const steps = [
         name: 'Resúmen',
         nameLite: '4',
         icon: 'info-device.svg',
-        path: '/quot/step_3',
+        path: '/quot/step_4',
         option: 'newQuotation'
     },
 ]

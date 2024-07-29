@@ -196,6 +196,7 @@ const AppProvider = ({children}) => {
         getServiceById} = useServices();
 
     const {saveNewBaggerQuotation,
+        useBaggerQuotationsResult,
         allBaggerQuotations,
         getAllBaggerQuotation,
         getBaggerQuotationById,
@@ -212,9 +213,24 @@ const AppProvider = ({children}) => {
     const {serviceOptionsByType,
         getServiceOptionsByType} = useServiceOptions();
 
-    const {saveNewSupply,getAllSupplies,allSupplies} = useSupplies();
+    const {saveNewSupply,
+        getAllSupplies,
+        allSupplies,
+        getSupplyById,
+        updateSupply} = useSupplies();
 
-    const {saveNewBaggerProduct} = useBaggerProducts();
+    const {saveNewBaggerProduct,
+        allBaggerProducts,
+        getAllBaggerProducts,
+        baggerProductData,
+        getBaggerProductById,
+        baggerProductEditSupplies,
+        setBaggerProductEditSupplies,
+        velocityServiceOptionEdit,
+        setVelocityServiceOptionEdit,
+        packingMaterialServiceOptionEdit,
+        setPackingMaterialServiceOptionEdit,
+        updateBaggerProduct} = useBaggerProducts();
 
     return (
 
@@ -331,11 +347,25 @@ const AppProvider = ({children}) => {
                 getAllSupplies,
                 allSupplies,
                 saveNewBaggerProduct,
+                allBaggerProducts,
+                getAllBaggerProducts,
                 selectedVelocityServiceOption,
                 setSelectedVelocityServiceOption,
                 selectedPackingMaterialServiceOption,
                 setSelectedPackingMaterialServiceOption,
                 totalQuotationPrice,
+                baggerProductData,
+                getBaggerProductById,
+                baggerProductEditSupplies,
+                setBaggerProductEditSupplies,
+                velocityServiceOptionEdit,
+                setVelocityServiceOptionEdit,
+                packingMaterialServiceOptionEdit,
+                setPackingMaterialServiceOptionEdit,
+                updateBaggerProduct,
+                getSupplyById,
+                updateSupply,
+                useBaggerQuotationsResult,
             }}
         >
             {children}

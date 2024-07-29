@@ -12,7 +12,7 @@ function classNames(...classes) {
 export default function SelectListBox({data,labelText,selected,setSelected,validationErrors,displayAttribute}) {
 
     return (
-        <Listbox value={selected} onChange={setSelected}>
+        <Listbox value={selected || ''} onChange={setSelected}>
             {({ open }) => (
                 <>
                     <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">{labelText}</Listbox.Label>
@@ -20,7 +20,7 @@ export default function SelectListBox({data,labelText,selected,setSelected,valid
                         <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
                               <span className="flex items-center">
                                   <p className="w-5 flex-shrink-0 rounded-full bg-gray-200 text-indigo-600 font-semibold shadow-sm ring-1 ring-inset ring-gray-300 text-center">{selected ? Object.entries(selected).length === 0 ? '' : formatListBoxIcon(selected[displayAttribute]) : null}</p>
-                                  <span className="ml-3 block truncate">{selected ? Object.entries(selected).length === 0 ? '-- Seleccione --' : selected[displayAttribute] : null}</span>
+                                  <span className="ml-3 block truncate">{selected ? Object.entries(selected).length === 0 ? '-- Seleccione --' : selected[displayAttribute] : '-- Seleccione --'}</span>
                               </span>
                             <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                             <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
