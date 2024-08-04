@@ -3,6 +3,7 @@ import {Transition} from "@headlessui/react";
 import useApp from "../../hooks/useApp.js";
 import {useNavigate} from "react-router-dom";
 import ProductOptionsSection from "../../components/products/ProductOptionsSection.jsx";
+import {toast} from "react-toastify";
 
 
 export default function QuotationStep3() {
@@ -26,6 +27,14 @@ export default function QuotationStep3() {
         handleManufacturerMaterialAdditionalSelected(optionSelected)
         navigate('/quot/step_4')
     }
+
+    useEffect(() => {
+        if (serviceSelectedData === null) {
+
+            toast.info('Sigue los pasos para conocer lo mejor de nuestro portafolio')
+            navigate('/quot/step_1')
+        }
+    }, []);
 
     useEffect(() => {
 
@@ -55,10 +64,10 @@ export default function QuotationStep3() {
                     <div className="mx-auto max-w-7xl px-6 lg:px-8">
 
                         <ProductOptionsSection
-                            title1={serviceSelectedData.description}
-                            title2={serviceSelectedData.steps[5].title}
+                            title1={serviceSelectedData !== null && serviceSelectedData.description}
+                            title2={serviceSelectedData !== null && serviceSelectedData.steps[5].title}
                             title3={'Presiona sobre las opciones deseadas para adicionarlas'}
-                            iterationOptions={serviceSelectedData.steps[5].options}
+                            iterationOptions={serviceSelectedData !== null && serviceSelectedData.steps[5].options}
                             onClickFunction={handleSelectAdditional}
                             optionSelected={null}
                             arraySelection={additionalProductsSelected}
@@ -85,7 +94,7 @@ export default function QuotationStep3() {
                                         title2={'Material de fabricación para :'}
                                         title3={'Selecciona una opción'}
                                         listTitle={additionalProductsSelected}
-                                        iterationOptions={serviceSelectedData.steps[2].options}
+                                        iterationOptions={serviceSelectedData !== null && serviceSelectedData.steps[2].options}
                                         onClickFunction={handleManufacturerMaterial}
                                         optionSelected={manufacturerMaterialAdditionalSelected.id}
                                         arraySelection={null}

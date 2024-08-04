@@ -1,6 +1,7 @@
 import {Outlet} from "react-router-dom";
 import Steps from "../../components/steps/Steps.jsx";
 import {Transition} from "@headlessui/react";
+import {ToastContainer} from "react-toastify";
 
 export default function QuotationLayout() {
     return (
@@ -21,11 +22,10 @@ export default function QuotationLayout() {
 
                     <div className="grid grid-cols-2 justify-between">
                         <div>
-                            <h1 className="text-xl font-bold leading-7">Nueva cotización</h1>
-                            <p className="mt-1 text-sm font-medium leading-6 text-gray-700">Acá conocerás nuestros
-                                servicios
-                                con
-                                más detalle!</p>
+                            <h1 className="text-xl font-bold leading-7">Cotiza nuestros productos</h1>
+                            <p className="mt-1 text-sm font-medium leading-6 text-gray-700">
+                                Acá conocerás nuestros servicios con más detalle!
+                            </p>
                         </div>
                         <div>
                             <img
@@ -49,6 +49,7 @@ export default function QuotationLayout() {
 
             </Transition>
 
+            <ToastContainer/>
 
         </main>
     );

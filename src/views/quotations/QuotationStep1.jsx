@@ -9,14 +9,24 @@ import ProductOptionsSection from "../../components/products/ProductOptionsSecti
 export default function QuotationStep1() {
 
 
-    const {selectedService,
-        setSelectedService,
-        handleFirstOptionSelected,
+    const {handleVelocityOptionSelected,
         velocityOptionSelected,
         services,
         getAllServices,
         serviceSelectedData,
-        getServiceById} = useApp();
+        setServiceSelectedData,
+        getServiceById,
+        selectedService,
+        setSelectedService,
+        setVelocityOptionSelected,
+        setPackingMaterialSelected,
+        setManufacturerMaterialSelected,
+        setBrandsSelected,
+        setManufacturerMaterialAdditionalSelected,
+        setAdditionalProductsSelected,
+        setCountryQuotationSelected,
+        setStateQuotationSelected,
+        setTownQuotationSelected} = useApp();
 
 
     const navigate = useNavigate()
@@ -38,7 +48,7 @@ export default function QuotationStep1() {
 
     const handleContinue = (optionSelected) => {
 
-        handleFirstOptionSelected(optionSelected)
+        handleVelocityOptionSelected(optionSelected)
 
         navigate('/quot/step_2')
     }
@@ -50,6 +60,20 @@ export default function QuotationStep1() {
         getServiceById(service.id)
 
     }
+
+    useEffect(() => {
+        setSelectedService({})
+        setServiceSelectedData(null)
+        setVelocityOptionSelected(null)
+        setPackingMaterialSelected(null)
+        setManufacturerMaterialSelected(null)
+        setBrandsSelected([])
+        setManufacturerMaterialAdditionalSelected([])
+        setAdditionalProductsSelected([])
+        setCountryQuotationSelected(null)
+        setStateQuotationSelected(null)
+        setTownQuotationSelected(null)
+    }, []);
 
 
     return (
@@ -68,7 +92,7 @@ export default function QuotationStep1() {
 
             </div>
 
-            { Object.entries(serviceSelectedData).length !== 0 && (
+            {serviceSelectedData !== null && (
                 <>
                     <Transition
                         appear={true}
@@ -89,7 +113,7 @@ export default function QuotationStep1() {
                                     title3={'Presiona sobre la opción que mejor se acomode a tus necesidades'}
                                     iterationOptions={serviceSelectedData.steps[0].options}
                                     onClickFunction={handleContinue}
-                                    optionSelected={velocityOptionSelected.id}
+                                    optionSelected={velocityOptionSelected !== null && velocityOptionSelected.id}
                                     arraySelection={null}
                                 >
                                 </ProductOptionsSection>

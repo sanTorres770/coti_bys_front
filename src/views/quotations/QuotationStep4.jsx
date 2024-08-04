@@ -1,10 +1,14 @@
-import {createRef, Fragment, useState} from "react";
+import {createRef, Fragment, useEffect, useState} from "react";
 import {Button, Dialog, DialogPanel, DialogTitle, Transition, TransitionChild} from "@headlessui/react";
 import useApp from "../../hooks/useApp.js";
 import {Link, useNavigate} from "react-router-dom";
 import InputForm from "../../components/layout/InputForm.jsx";
 import {ArrowLeftCircleIcon} from "@heroicons/react/20/solid/index.js";
 import SelectListBox from "../../components/layout/SelectListBox.jsx";
+import {toast} from "react-toastify";
+import ValidationFormAlert from "../../components/alerts/ValidationFormAlert.jsx";
+import FormSubmitButton from "../../components/button/FormSubmitButton.jsx";
+import LoadingAlert from "../../components/alerts/LoadingAlert.jsx";
 
 
 
@@ -16,6 +20,7 @@ export default function QuotationStep4() {
         states,
         towns,
         validationErrors,
+        setValidationErrors,
         countryQuotationSelected,
         stateQuotationSelected,
         townQuotationSelected,
@@ -29,8 +34,7 @@ export default function QuotationStep4() {
         manufacturerMaterialAdditionalSelected,
         brandsSelected,
         serviceSelectedData,
-        saveNewBaggerQuotation,
-        useBaggerQuotationsResult} = useApp();
+        saveNewBaggerQuotation} = useApp();
 
     const businessNameRef = createRef()
     const contactNameRef = createRef()
@@ -38,7 +42,8 @@ export default function QuotationStep4() {
     const emailRef = createRef()
     const addressRef = createRef()
 
-    const [isOpen, setIsOpen] = useState(false)
+    const [errores, setErrores] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleCountryChange = (country) => {
 
@@ -61,6 +66,10 @@ export default function QuotationStep4() {
     const handleSubmit = e => {
 
         e.preventDefault()
+
+        setValidationErrors({})
+        setErrores([])
+        setIsLoading(true)
 
         const form = {
             contact: {
@@ -86,24 +95,55 @@ export default function QuotationStep4() {
         }
 
 
-        saveNewBaggerQuotation(form)
+        saveNewBaggerQuotation(form).then(data => {
+
+            if (data.status === 200 || data.status === 201) {
+                toast.success(`La cotización ${data.data.consecutive} se creó correctamente!`)
+                navigate('/quot/step_1')
+            }else {
+                toast.error('Error en el proceso.')
+            }
+
+        }).catch(error => {
+
+            if (error.code === "ERR_BAD_REQUEST"){
+                setErrores(Object.values(error.response.data))
+                setValidationErrors(error.response.data)
+                toast.error('Revisa los campos que faltan por diligenciar en el formulario.')
+            }
+
+            if (error.code === "ERR_NETWORK"){
+                toast.error('Error de conexión.')
+            }
+
+
+        }).finally(() => setIsLoading(false))
 
     }
 
+    useEffect(() => {
+        setValidationErrors({})
+
+        if (serviceSelectedData === null) {
+
+            toast.info('Sigue los pasos para conocer lo mejor de nuestro portafolio')
+            navigate('/quot/step_1')
+        }
+
+    }, []);
 
 
     return (
 
         <>
-            <>
-                <Button
-                    onClick={()=> navigate('/quot/step_3')}
-                    className="rounded-full bg-black/20 py-2 px-2 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white"
-                >
-                    <ArrowLeftCircleIcon className="h-5 w-5" aria-hidden="true" />
-                </Button>
 
-            </>
+            <Button
+                onClick={()=> navigate('/quot/step_1')}
+                className="rounded-full bg-black/20 py-2 px-2 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white"
+            >
+                <ArrowLeftCircleIcon className="h-5 w-5" aria-hidden="true" />
+            </Button>
+
 
             <Transition
                 appear={true}
@@ -117,6 +157,10 @@ export default function QuotationStep4() {
             >
 
                 <form onSubmit={handleSubmit} noValidate className="mb-10">
+
+                    {errores  && (errores.map(error => <ValidationFormAlert key={error}>{error}</ValidationFormAlert>))}
+
+
                     <div className="my-10 lg:text-start">
                         <h2 className="text-base font-semibold leading-7 text-gray-900">Datos de contacto</h2>
                         <p className="mt-1 text-sm leading-6 text-gray-600">
@@ -128,7 +172,7 @@ export default function QuotationStep4() {
 
                         <div className="sm:col-span-2">
                             <InputForm
-                                validationErrors={validationErrors ? validationErrors.businessName ? validationErrors.businessName : null : null}
+                                validationErrors={validationErrors ? validationErrors["contact.businessName"] ? validationErrors["contact.businessName"] : null : null}
                                 inputId={'businessName'}
                                 type={'text'}
                                 labelValue={'Nombre ó razón social *'}
@@ -140,7 +184,7 @@ export default function QuotationStep4() {
 
                         <div className="sm:col-span-2">
                             <InputForm
-                                validationErrors={validationErrors ? validationErrors.contactName ? validationErrors.contactName : null : null}
+                                validationErrors={validationErrors ? validationErrors["contact.contactName"] ? validationErrors["contact.contactName"] : null : null}
                                 inputId={'contactName'}
                                 type={'text'}
                                 labelValue={'Nombre de contacto *'}
@@ -152,7 +196,7 @@ export default function QuotationStep4() {
 
                         <div className="sm:col-span-2">
                             <InputForm inputId={'contactTelephone'}
-                                       validationErrors={validationErrors ? validationErrors.telephone ? validationErrors.telephone : null : null}
+                                       validationErrors={validationErrors ? validationErrors["contact.telephone"] ? validationErrors["contact.telephone"] : null : null}
                                        type={'text'}
                                        labelValue={'Teléfono de contacto *'}
                                        reference={telephoneRef}
@@ -163,7 +207,7 @@ export default function QuotationStep4() {
 
                         <div className="sm:col-span-3">
                             <InputForm inputId={'contactEmail'}
-                                       validationErrors={validationErrors ? validationErrors.email ? validationErrors.email : null : null}
+                                       validationErrors={validationErrors ? validationErrors["contact.email"] ? validationErrors["contact.email"] : null : null}
                                        type={'email'}
                                        labelValue={'Correo electrónico de contacto *'}
                                        reference={emailRef}
@@ -175,7 +219,7 @@ export default function QuotationStep4() {
 
                         <div className="sm:col-span-3">
                             <InputForm inputId={'serviceAddress'}
-                                       validationErrors={validationErrors ? validationErrors.address ? validationErrors.address : null : null}
+                                       validationErrors={validationErrors ? validationErrors["contact.address"] ? validationErrors["contact.address"] : null : null}
                                        type={'text'}
                                        labelValue={'Dirección del servicio *'}
                                        reference={addressRef}
@@ -188,7 +232,7 @@ export default function QuotationStep4() {
                             <SelectListBox
                                 data={countries}
                                 labelText={'País *'}
-                                validationErrors={validationErrors ? validationErrors.country ? validationErrors.country : null : null}
+                                validationErrors={validationErrors ? validationErrors["contact.country"] ? validationErrors["contact.country"] : null : null}
                                 selected={countryQuotationSelected}
                                 setSelected={handleCountryChange}
                                 displayAttribute={'name'}
@@ -200,7 +244,7 @@ export default function QuotationStep4() {
                             <SelectListBox
                                 data={states}
                                 labelText={'Departamento/Estado *'}
-                                validationErrors={validationErrors ? validationErrors.state ? validationErrors.state : null : null}
+                                validationErrors={validationErrors ? validationErrors["contact.state"] ? validationErrors["contact.state"] : null : null}
                                 selected={stateQuotationSelected}
                                 setSelected={handleStateChange}
                                 displayAttribute={'name'}
@@ -212,7 +256,7 @@ export default function QuotationStep4() {
                             <SelectListBox
                                 data={towns}
                                 labelText={'Municipio/Ciudad *'}
-                                validationErrors={validationErrors ? validationErrors.town ? validationErrors.town : null : null}
+                                validationErrors={validationErrors ? validationErrors["contact.town"] ? validationErrors["contact.town"] : null : null}
                                 selected={townQuotationSelected}
                                 setSelected={handleTownChange}
                                 displayAttribute={'name'}
@@ -222,58 +266,14 @@ export default function QuotationStep4() {
                     </div>
 
                     <div className="sm:col-span-1">
-                        <Button
-                            type="submit"
-                            onClick={(e)=> {
-                                setIsOpen(true)
-                                handleSubmit(e)
-                            }}
-                            className="flex w-full justify-center rounded-md bg-indigo-600 mt-0 md:mt-6 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                            Crear cotización
-                        </Button>
+                        {!isLoading ?
 
-                        <Transition appear show={isOpen}>
-                            <Dialog as="div" className="relative z-10 focus:outline-none" onClose={()=>setIsOpen(false)}>
-                                <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                                    <div className="flex min-h-full items-center justify-center p-4">
-                                        <div className="fixed inset-0 bg-black/50" aria-hidden="true"/>
-                                        <TransitionChild
-                                            enter="ease-out duration-300"
-                                            enterFrom="opacity-0 transform-[scale(95%)]"
-                                            enterTo="opacity-100 transform-[scale(100%)]"
-                                            leave="ease-in duration-200"
-                                            leaveFrom="opacity-100 transform-[scale(100%)]"
-                                            leaveTo="opacity-0 transform-[scale(95%)]"
-                                        >
-                                            <DialogPanel
-                                                className="w-full max-w-md rounded-xl bg-indigo-600/60 p-6 backdrop-blur-2xl">
-                                                <DialogTitle as="h3" className="text-base/7 font-medium text-white">
-                                                    Confirmación!
-                                                </DialogTitle>
-                                                <p className="mt-2 text-sm/6 text-white/50">
-                                                    {useBaggerQuotationsResult ?
-                                                        'La cotización ha sido generada correctamente!. Presiona finalizar y la información ' +
-                                                        'será enviada al correo electrónico que nos indicaste lo más pronto posible.'
-                                                        :
-                                                        'Ha ocurrido un error al guardar la información. Si el error persiste, contacte a la linea de ' +
-                                                        'atención.'}
-                                                </p>
-                                                <div className="flex justify-center mt-4">
-                                                    <Link
-                                                        className="inline-flex items-center me-1 gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
-                                                        onClick={()=> setIsOpen(false)}
-                                                        to={'https://basculasysuministros.com'}>
-                                                        Finalizar
-                                                    </Link>
-                                                </div>
-                                            </DialogPanel>
-                                        </TransitionChild>
-                                    </div>
-                                </div>
-                            </Dialog>
-                        </Transition>
+                            <FormSubmitButton value={'Crear cotización'} handleSubmit={handleSubmit}></FormSubmitButton>
 
+                            :
+
+                            <LoadingAlert/>
+                        }
                     </div>
 
                 </form>
