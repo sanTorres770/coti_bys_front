@@ -54,16 +54,20 @@ const AppProvider = ({children}) => {
     const [idSelected, setIdSelected] = useState('')
     const [filterOptionsSelected, setFilterOptionsSelected] = useState([])
     const [validationErrors, setValidationErrors] = useState({})
+
+    // bagger quotation
     const [selectedService, setSelectedService] = useState({})
-    const [countryQuotationSelected, setCountryQuotationSelected] = useState({})
-    const [stateQuotationSelected, setStateQuotationSelected] = useState({})
-    const [townQuotationSelected, setTownQuotationSelected] = useState({})
-    const [velocityOptionSelected, setVelocityOptionSelected] = useState({})
-    const [packingMaterialSelected, setPackingMaterialSelected] = useState({})
-    const [manufacturerMaterialSelected, setManufacturerMaterialSelected] = useState({})
+    const [velocityOptionSelected, setVelocityOptionSelected] = useState(null)
+    const [packingMaterialSelected, setPackingMaterialSelected] = useState(null)
+    const [manufacturerMaterialSelected, setManufacturerMaterialSelected] = useState(null)
     const [brandsSelected, setBrandsSelected] = useState([])
     const [manufacturerMaterialAdditionalSelected, setManufacturerMaterialAdditionalSelected] = useState({})
     const [additionalProductsSelected, setAdditionalProductsSelected] = useState([])
+    const [countryQuotationSelected, setCountryQuotationSelected] = useState(null)
+    const [stateQuotationSelected, setStateQuotationSelected] = useState(null)
+    const [townQuotationSelected, setTownQuotationSelected] = useState(null)
+
+    //  bagger product
     const [selectedVelocityServiceOption, setSelectedVelocityServiceOption] = useState({})
     const [selectedPackingMaterialServiceOption, setSelectedPackingMaterialServiceOption] = useState({})
 
@@ -127,7 +131,7 @@ const AppProvider = ({children}) => {
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    const handleFirstOptionSelected = (optionSelected) => {
+    const handleVelocityOptionSelected = (optionSelected) => {
         setVelocityOptionSelected(optionSelected)
     }
 
@@ -193,10 +197,10 @@ const AppProvider = ({children}) => {
     const {services,
         getAllServices,
         serviceSelectedData,
+        setServiceSelectedData,
         getServiceById} = useServices();
 
     const {saveNewBaggerQuotation,
-        useBaggerQuotationsResult,
         allBaggerQuotations,
         getAllBaggerQuotation,
         getBaggerQuotationById,
@@ -306,7 +310,7 @@ const AppProvider = ({children}) => {
                 setSelectedService,
                 velocityOptionSelected,
                 setVelocityOptionSelected,
-                handleFirstOptionSelected,
+                handleVelocityOptionSelected,
                 handlePackingMaterialSelected,
                 packingMaterialSelected,
                 manufacturerMaterialSelected,
@@ -365,7 +369,12 @@ const AppProvider = ({children}) => {
                 updateBaggerProduct,
                 getSupplyById,
                 updateSupply,
-                useBaggerQuotationsResult,
+                setPackingMaterialSelected,
+                setManufacturerMaterialSelected,
+                setBrandsSelected,
+                setManufacturerMaterialAdditionalSelected,
+                setAdditionalProductsSelected,
+                setServiceSelectedData
             }}
         >
             {children}

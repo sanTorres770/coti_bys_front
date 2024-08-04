@@ -7,19 +7,7 @@ export const useSupplies = () => {
 
     const saveNewSupply = async (newSupply) => {
 
-        let response;
-
-        try {
-
-            const {data} = await customAxios.post('/api/supplies',newSupply)
-
-            response = data
-
-        }catch (error) {
-            console.log(error)
-        }
-
-        return response
+        return await customAxios.post('/api/supplies',newSupply)
 
     }
 
@@ -53,19 +41,7 @@ export const useSupplies = () => {
 
     const updateSupply = async (supply,id) => {
 
-        let response;
-
-        try {
-
-            const {data} = await customAxios.put(`/api/supplies/${id}`,supply)
-
-            response = data
-
-        }catch (error) {
-            console.log(error)
-        }
-
-        return response
+        return await customAxios.put(`/api/supplies/${id}`,supply)
 
     }
 

@@ -11,22 +11,11 @@ export const useBaggerQuotations = () => {
     const [pneumaticSuppliesPriceResult, setPneumaticSuppliesPriceResult] = useState(0)
     const [totalQuotationPrice, setTotalQuotationPrice] = useState(0)
     const [newBaggerQuotationLength, setNewBaggerQuotationLength] = useState(0)
-    const [useBaggerQuotationsResult, setUseBaggerQuotationsResult] = useState(false)
 
 
     const saveNewBaggerQuotation = async (newBaggerQuotation) => {
 
-        try {
-
-
-            const {data} = await customAxios.post('/api/baggerQuotations',newBaggerQuotation)
-
-            setUseBaggerQuotationsResult(data)
-
-
-        }catch (error) {
-            console.log(error)
-        }
+        return await customAxios.post('/api/baggerQuotations',newBaggerQuotation)
 
     }
 
@@ -91,8 +80,7 @@ export const useBaggerQuotations = () => {
         totalQuotationPrice,
         setTotalQuotationPrice,
         setNewBaggerQuotationLength,
-        handleSetNewBaggerQuotationLength,
-        useBaggerQuotationsResult
+        handleSetNewBaggerQuotationLength
     }
 
 }

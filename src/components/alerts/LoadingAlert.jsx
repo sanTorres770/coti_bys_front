@@ -15,11 +15,6 @@ export default function LoadingAlert() {
     return (
         <div>
             {spinner}
-
-            <div className='flex justify-center message-div text-center'>
-                <h2 className='message-field text-center'>La solicitud de servicio se está generando...</h2>
-            </div>
-
         </div>
     )
 }

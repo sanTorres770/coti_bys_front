@@ -6,7 +6,7 @@ export const useServices = () => {
 
     const token = localStorage.getItem('AUTH_TOKEN')
     const [services, setServices] = useState([])
-    const [serviceSelectedData, setServiceSelectedData] = useState({})
+    const [serviceSelectedData, setServiceSelectedData] = useState(null)
 
     const getAllServices = async () => {
 
@@ -37,6 +37,7 @@ export const useServices = () => {
     return {services,
         getAllServices,
         serviceSelectedData,
+        setServiceSelectedData,
         getServiceById}
 
 }

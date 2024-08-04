@@ -3,6 +3,7 @@ import {Transition} from "@headlessui/react";
 import useApp from "../../hooks/useApp.js";
 import {useNavigate} from "react-router-dom";
 import ProductOptionsSection from "../../components/products/ProductOptionsSection.jsx";
+import {toast} from "react-toastify";
 
 
 export default function QuotationStep2() {
@@ -51,6 +52,14 @@ export default function QuotationStep2() {
     }
 
     useEffect(() => {
+        if (serviceSelectedData === null) {
+
+            toast.info('Sigue los pasos para conocer lo mejor de nuestro portafolio')
+            navigate('/quot/step_1')
+        }
+    }, []);
+
+    useEffect(() => {
 
         window.scrollBy({
             top: 500,
@@ -77,18 +86,18 @@ export default function QuotationStep2() {
                     <div className="mx-auto max-w-7xl px-6 lg:px-8">
 
                         <ProductOptionsSection
-                            title1={serviceSelectedData.description}
-                            title2={serviceSelectedData.steps[1].title}
-                            title3={velocityOptionSelected.name}
-                            iterationOptions={serviceSelectedData.steps[1].options}
+                            title1={serviceSelectedData !== null && serviceSelectedData.description}
+                            title2={serviceSelectedData !== null && serviceSelectedData.steps[1].title}
+                            title3={velocityOptionSelected !== null && velocityOptionSelected.name}
+                            iterationOptions={serviceSelectedData !== null && serviceSelectedData.steps[1].options}
                             onClickFunction={handlePackingMaterial}
-                            optionSelected={packingMaterialSelected.id}
+                            optionSelected={packingMaterialSelected !== null && packingMaterialSelected.id}
                             arraySelection={null}
                         >
                         </ProductOptionsSection>
 
 
-                        {Object.entries(packingMaterialSelected).length > 0 && (
+                        {packingMaterialSelected !== null && (
 
                             <Transition
                                 as={'div'}
@@ -103,11 +112,11 @@ export default function QuotationStep2() {
                             >
                                 <div>
                                     <ProductOptionsSection
-                                        title2={`Material de fabricación ${serviceSelectedData.description}:`}
+                                        title2={`Material de fabricación ${serviceSelectedData !== null && serviceSelectedData.description}:`}
                                         title3={'Seleccione una opción'}
-                                        iterationOptions={serviceSelectedData.steps[2].options}
+                                        iterationOptions={serviceSelectedData !== null && serviceSelectedData.steps[2].options}
                                         onClickFunction={handleManufacturerMaterialSelected}
-                                        optionSelected={manufacturerMaterialSelected.id}
+                                        optionSelected={manufacturerMaterialSelected !== null && manufacturerMaterialSelected.id}
                                         arraySelection={null}
                                     >
                                     </ProductOptionsSection>
@@ -115,9 +124,9 @@ export default function QuotationStep2() {
 
 
                                     <ProductOptionsSection
-                                        title2={serviceSelectedData.steps[3].title}
+                                        title2={serviceSelectedData !== null && serviceSelectedData.steps[3].title}
                                         title3={'Seleccione una opción'}
-                                        iterationOptions={serviceSelectedData.steps[3].options}
+                                        iterationOptions={serviceSelectedData !== null && serviceSelectedData.steps[3].options}
                                         onClickFunction={handleBrands}
                                         optionSelected={null}
                                         arraySelection={brandsSelected}
@@ -125,9 +134,9 @@ export default function QuotationStep2() {
                                     </ProductOptionsSection>
 
                                     <ProductOptionsSection
-                                        title2={serviceSelectedData.steps[4].title}
+                                        title2={serviceSelectedData !== null && serviceSelectedData.steps[4].title}
                                         title3={'Seleccione una opción'}
-                                        iterationOptions={serviceSelectedData.steps[4].options}
+                                        iterationOptions={serviceSelectedData !== null && serviceSelectedData.steps[4].options}
                                         onClickFunction={handleBrands}
                                         optionSelected={null}
                                         arraySelection={brandsSelected}

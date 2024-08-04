@@ -55,6 +55,12 @@ export const commonConfig = () => {
     }
 
     const formatPriceToCurrency = (price) => {
+
+        if (isNaN(Number(price))){
+
+            return ''
+        }
+
         return new Intl.NumberFormat('es-CO',{
             style: 'currency', currency: 'COP' }).format(Number(price))
     }
