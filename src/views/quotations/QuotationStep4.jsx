@@ -34,7 +34,8 @@ export default function QuotationStep4() {
         manufacturerMaterialAdditionalSelected,
         brandsSelected,
         serviceSelectedData,
-        saveNewBaggerQuotation} = useApp();
+        saveNewBaggerQuotation,
+        isExternEntry} = useApp();
 
     const businessNameRef = createRef()
     const contactNameRef = createRef()
@@ -99,7 +100,7 @@ export default function QuotationStep4() {
 
             if (data.status === 200 || data.status === 201) {
                 toast.success(`La cotización ${data.data.consecutive} se creó correctamente!`)
-                navigate('/quot/step_1')
+                navigate(isExternEntry ? '/quot/ext_step_1' : '/quot/step_1')
             }else {
                 toast.error('Error en el proceso.')
             }
@@ -125,7 +126,6 @@ export default function QuotationStep4() {
         setValidationErrors({})
 
         if (serviceSelectedData === null) {
-
             toast.info('Sigue los pasos para conocer lo mejor de nuestro portafolio')
             navigate('/quot/step_1')
         }

@@ -154,6 +154,10 @@ const router = createBrowserRouter([
                 path: '/quot/step_4',
                 element: <QuotationStep4/>
             },
+            {
+                path: '/quot/ext_step_1',
+                element: <QuotationStep1/>
+            },
         ]
     },
     {
@@ -169,7 +173,7 @@ const router = createBrowserRouter([
                 element: <Register/>
             }
         ]
-    }
+    },
 ])
 
 export default router

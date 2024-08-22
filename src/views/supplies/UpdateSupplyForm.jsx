@@ -67,9 +67,22 @@ export default function UpdateSupplyForm() {
 
 
             if (error.code === "ERR_BAD_REQUEST"){
-                setErrores(Object.values(error.response.data))
-                setValidationErrors(error.response.data)
-                toast.error('Revisa los campos que faltan por diligenciar en el formulario.')
+
+                switch (error.response.status) {
+
+                    case 400: {
+                        setErrores(Object.values(error.response.data))
+                        setValidationErrors(error.response.data)
+                        toast.error('Revisa los campos que faltan por diligenciar en el formulario.')
+                        break;
+                    }
+
+                    case 403: {
+                        toast.error('No autorizado.')
+                        break;
+                    }
+
+                }
             }
 
             if (error.code === "ERR_NETWORK"){

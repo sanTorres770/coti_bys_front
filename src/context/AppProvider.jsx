@@ -12,6 +12,7 @@ import {useBaggerQuotations} from "../hooks/useBaggerQuotations.js";
 import {useServiceOptions} from "../hooks/useServiceOptions.js";
 import {useSupplies} from "../hooks/useSupplies.js";
 import {useBaggerProducts} from "../hooks/useBaggerProducts.js";
+import {useAuth} from "../hooks/useAuth.js";
 
 
 ////////////////////////////////////////////////
@@ -70,6 +71,8 @@ const AppProvider = ({children}) => {
     //  bagger product
     const [selectedVelocityServiceOption, setSelectedVelocityServiceOption] = useState({})
     const [selectedPackingMaterialServiceOption, setSelectedPackingMaterialServiceOption] = useState({})
+
+    const [isExternEntry, setIsExternEntry] = useState(false)
 
 
     const handleSidebarOption = (option) => {
@@ -374,7 +377,9 @@ const AppProvider = ({children}) => {
                 setBrandsSelected,
                 setManufacturerMaterialAdditionalSelected,
                 setAdditionalProductsSelected,
-                setServiceSelectedData
+                setServiceSelectedData,
+                isExternEntry,
+                setIsExternEntry
             }}
         >
             {children}

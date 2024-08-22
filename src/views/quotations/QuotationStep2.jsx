@@ -16,7 +16,8 @@ export default function QuotationStep2() {
         handleManufacturerMaterialSelected,
         manufacturerMaterialSelected,
         handleBrandsSelected,
-        brandsSelected} = useApp();
+        brandsSelected,
+        isExternEntry} = useApp();
 
     const navigate = useNavigate()
 
@@ -52,11 +53,12 @@ export default function QuotationStep2() {
     }
 
     useEffect(() => {
-        if (serviceSelectedData === null) {
 
+        if (serviceSelectedData === null) {
             toast.info('Sigue los pasos para conocer lo mejor de nuestro portafolio')
             navigate('/quot/step_1')
         }
+
     }, []);
 
     useEffect(() => {
@@ -121,12 +123,13 @@ export default function QuotationStep2() {
                                     >
                                     </ProductOptionsSection>
 
-
-
                                     <ProductOptionsSection
                                         title2={serviceSelectedData !== null && serviceSelectedData.steps[3].title}
                                         title3={'Seleccione una opción'}
-                                        iterationOptions={serviceSelectedData !== null && serviceSelectedData.steps[3].options}
+                                        iterationOptions={serviceSelectedData !== null &&
+                                                    isExternEntry ?
+                                                    serviceSelectedData.steps[3].options.filter(option => option.id === '11') :
+                                                    serviceSelectedData.steps[3].options}
                                         onClickFunction={handleBrands}
                                         optionSelected={null}
                                         arraySelection={brandsSelected}
@@ -142,8 +145,6 @@ export default function QuotationStep2() {
                                         arraySelection={brandsSelected}
                                     >
                                     </ProductOptionsSection>
-
-
 
 
                                 </div>

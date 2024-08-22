@@ -5,6 +5,7 @@ import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import SupplyForm from "../../components/supplies/SupplyForm.jsx";
 
+
 export default function NewSupplyForm() {
 
     const {validationErrors,
@@ -23,7 +24,6 @@ export default function NewSupplyForm() {
     const [selectedMakerServiceOption, setSelectedMakerServiceOption] = useState(null)
     const [errores, setErrores] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-
 
     const handleSubmit = e => {
 
@@ -61,10 +61,25 @@ export default function NewSupplyForm() {
 
         }).catch(error => {
 
+
             if (error.code === "ERR_BAD_REQUEST"){
-                setErrores(Object.values(error.response.data))
-                setValidationErrors(error.response.data)
-                toast.error('Revisa los campos que faltan por diligenciar en el formulario.')
+
+                switch (error.response.status) {
+
+                    case 400: {
+                        setErrores(Object.values(error.response.data))
+                        setValidationErrors(error.response.data)
+                        toast.error('Revisa los campos que faltan por diligenciar en el formulario.')
+                        break;
+                    }
+
+                    case 403: {
+                        toast.error('No autorizado.')
+                        break;
+                    }
+
+                }
+
             }
 
             if (error.code === "ERR_NETWORK"){
@@ -79,36 +94,36 @@ export default function NewSupplyForm() {
     return (
 
         <div className="overflow-hidden overflow-x-auto bg-white rounded-lg border border-gray-200 shadow-md m-5">
-            <Transition
-                as={'div'}
-                appear={true}
-                show={true}
-                enter="transition-all ease-in-out duration-500 delay-[200ms]"
-                enterFrom="opacity-0 translate-y-6"
-                enterTo="opacity-100 translate-y-0"
-                leave="transition-all ease-in-out duration-300"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-            >
-
-                <SupplyForm validationErrors={validationErrors}
-                            errors={errores}
-                            handleSubmit={handleSubmit}
-                            descriptionRef={descriptionRef}
-                            referenceRef={referenceRef}
-                            sourceRef={sourceRef}
-                            totalPrice={totalPrice}
-                            setTotalPrice={setTotalPrice}
-                            makerOption={selectedMakerServiceOption}
-                            setMakerOption={setSelectedMakerServiceOption}
-                            buttonValue={'Crear insumo'}
-                            isEdit={false}
-                            isLoading={isLoading}
+                <Transition
+                    as={'div'}
+                    appear={true}
+                    show={true}
+                    enter="transition-all ease-in-out duration-500 delay-[200ms]"
+                    enterFrom="opacity-0 translate-y-6"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition-all ease-in-out duration-300"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
                 >
-                </SupplyForm>
 
-            </Transition>
-        </div>
+                    <SupplyForm validationErrors={validationErrors}
+                                errors={errores}
+                                handleSubmit={handleSubmit}
+                                descriptionRef={descriptionRef}
+                                referenceRef={referenceRef}
+                                sourceRef={sourceRef}
+                                totalPrice={totalPrice}
+                                setTotalPrice={setTotalPrice}
+                                makerOption={selectedMakerServiceOption}
+                                setMakerOption={setSelectedMakerServiceOption}
+                                buttonValue={'Crear insumo'}
+                                isEdit={false}
+                                isLoading={isLoading}
+                    >
+                    </SupplyForm>
+
+                </Transition>
+            </div>
 
     );
 }

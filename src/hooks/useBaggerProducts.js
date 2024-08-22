@@ -9,35 +9,30 @@ export const useBaggerProducts = () => {
     const [velocityServiceOptionEdit,setVelocityServiceOptionEdit] = useState({})
     const [packingMaterialServiceOptionEdit,setPackingMaterialServiceOptionEdit] = useState({})
 
+    const config = () => {
+        return {
+            headers: {
+                Authorization : `Bearer ${sessionStorage.getItem('token')}`
+            }
+        }
+    }
 
     const saveNewBaggerProduct = async (newBaggerProduct) => {
 
-        let response;
+        return await customAxios.post('/api/baggerProducts',newBaggerProduct,config())
 
-        try {
-
-            const {data} = await customAxios.post('/api/baggerProducts',newBaggerProduct)
-
-            response = data
-
-
-        }catch (error) {
-            console.log(error)
-        }
-
-        return response
     }
 
     const getAllBaggerProducts = async () => {
 
         try {
 
-            const {data} = await customAxios('/api/baggerProducts')
+            const {data} = await customAxios('/api/baggerProducts',config())
 
             setAllBaggerProducts(data)
 
         }catch (error) {
-            console.log(error)
+
         }
 
     }
@@ -51,38 +46,27 @@ export const useBaggerProducts = () => {
             setVelocityServiceOptionEdit({})
             setPackingMaterialServiceOptionEdit({})
 
-            const {data} = await customAxios('/api/baggerProducts/' + id)
+            const {data} = await customAxios('/api/baggerProducts/' + id,config())
 
             setBaggerProductData(data)
             setBaggerProductEditSupplies(data.supplies)
             setVelocityServiceOptionEdit(data.velocity)
             setPackingMaterialServiceOptionEdit(data.packingMaterial)
         }catch (error) {
-            console.log(error)
+
         }
 
     }
 
     const updateBaggerProduct = async (baggerProduct,id) => {
 
-        let response;
+        setBaggerProductData({})
+        setBaggerProductEditSupplies([])
+        setVelocityServiceOptionEdit({})
+        setPackingMaterialServiceOptionEdit({})
 
-        try {
+        return await customAxios.put(`/api/baggerProducts/${id}`,baggerProduct,config())
 
-            const {data} = await customAxios.put(`/api/baggerProducts/${id}`,baggerProduct)
-
-            setBaggerProductData({})
-            setBaggerProductEditSupplies([])
-            setVelocityServiceOptionEdit({})
-            setPackingMaterialServiceOptionEdit({})
-
-            response = data
-
-        }catch (error) {
-            console.log(error)
-        }
-
-        return response
 
     }
 

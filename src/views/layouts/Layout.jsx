@@ -1,22 +1,45 @@
-import {Outlet} from "react-router-dom";
+import {Navigate, Outlet, useNavigate} from "react-router-dom";
 import Sidebar from "../../components/layout/Sidebar.jsx";
-/*import {useAuth} from "../../hooks/useAuth.js";*/
-import {ToastContainer} from "react-toastify";
+import {useAuth} from "../../hooks/useAuth.js";
+import {toast, ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 import useApp from "../../hooks/useApp.js";
 import Navigation from "../../components/layout/Navigation.jsx";
 import {Transition} from "@headlessui/react";
+import {useEffect} from "react";
 
 
 export default function Layout() {
 
-    /*const {user, error} = useAuth({middleware:'auth'})*/
+    const {login,getUserByUsername,handlerLogout} = useAuth()
     const {sidebarVisible} = useApp()
 
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        setInterval(()=>{
+            getUserByUsername(login.user.username).then(r => {}
+
+            ).catch(error => {
+                if (error.response.status === 401){
+
+                    toast.info('La sesión no es válida! Redirigiendo al login...')
+
+                    setTimeout(()=>{
+                        handlerLogout().then(r => {
+                            navigate('/auth/login')
+                        })
+                    },2500)
+                }
+            })
+        },1800000)
+    }, []);
 
     return (
 
-        <>
+        login.isAuth ?
+
+            <>
 
             {sidebarVisible &&
 
@@ -48,6 +71,10 @@ export default function Layout() {
 
             <ToastContainer/>
 
-        </>
+            </>
+
+            :
+
+            <Navigate to={'/auth/login'}></Navigate>
     )
 }

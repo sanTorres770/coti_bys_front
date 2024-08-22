@@ -130,8 +130,10 @@ export default function SupplyForm({supplyData,setSupplyData,handleSubmit,isEdit
                             >
                             </InputForm>
                         </div>
-                    </div>
 
+                        <p className='text-sm font-light'>(*) Obligatorio</p>
+
+                    </div>
                 </div>
                 <div className="sm:col-span-1 mb-5">
                     {!isLoading ?

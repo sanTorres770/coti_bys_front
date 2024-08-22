@@ -50,6 +50,8 @@ export default function UpdateBaggerProductForm() {
     const [velocityOptions, setVelocityOptions] = useState([])
     const [packingMaterialOptions, setPackingMaterialOptions] = useState([])
     const [supplyAmounts, setSupplyAmounts] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+
 
     const handleFocusOutUnitInoxInput = (e) => {
 
@@ -85,6 +87,7 @@ export default function UpdateBaggerProductForm() {
         e.preventDefault()
 
         setSupplyAmounts([])
+        setIsLoading(true)
 
         baggerProductEditSupplies.map((supply,index) => {
 
@@ -111,10 +114,10 @@ export default function UpdateBaggerProductForm() {
             active: true
         }
 
-        updateBaggerProduct(baggerProductToEdit,id).then((response) => {
+        updateBaggerProduct(baggerProductToEdit,id).then(data => {
 
-            if (response){
-                toast.success('El producto se actualizó correctamente!')
+            if (data.status === 200 || data.status === 201) {
+                toast.success(`El producto ${data.data.name} se actualizó correctamente!`)
 
                 const buttonToClose = document.getElementById(`sidebar_option_${selectedSidebarOption.id}`);
 
@@ -128,7 +131,35 @@ export default function UpdateBaggerProductForm() {
                 toast.error('Error en el proceso.')
             }
 
-        })
+        }).catch(error => {
+
+
+            if (error.code === "ERR_BAD_REQUEST"){
+
+                switch (error.response.status) {
+
+                    case 400: {
+                        setErrores(Object.values(error.response.data))
+                        setValidationErrors(error.response.data)
+                        toast.error('Revisa los campos que faltan por diligenciar en el formulario.')
+                        break;
+                    }
+
+                    case 403: {
+                        toast.error('No autorizado.')
+                        break;
+                    }
+
+                }
+
+            }
+
+            if (error.code === "ERR_NETWORK"){
+                toast.error('Error de conexión.')
+            }
+
+
+        }).finally(() => setIsLoading(false))
 
     }
 
