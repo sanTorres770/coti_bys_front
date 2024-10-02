@@ -13,8 +13,7 @@ export default function QuotationStep3() {
         handleAdditionalProductSelected,
         additionalProductsSelected,
         handleManufacturerMaterialAdditionalSelected,
-        manufacturerMaterialAdditionalSelected,
-        isExternEntry} = useApp();
+        manufacturerMaterialAdditionalSelected} = useApp();
 
     const navigate = useNavigate()
 
@@ -33,14 +32,14 @@ export default function QuotationStep3() {
         if (serviceSelectedData === null) {
 
             toast.info('Sigue los pasos para conocer lo mejor de nuestro portafolio')
-            navigate(isExternEntry ? '/quot/ext_step_1' : '/quot/step_1')
+            navigate('/quot/step_1')
         }
     }, []);
 
     useEffect(() => {
 
         window.scrollBy({
-            top: 500,
+            top: 0,
             left: 0,
             behavior: "smooth",
         })
@@ -61,7 +60,7 @@ export default function QuotationStep3() {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
             >
-                <div className="bg-white py-5 sm:py-5">
+                <div className="bg-white py-5">
                     <div className="mx-auto max-w-7xl px-6 lg:px-8">
 
                         <ProductOptionsSection

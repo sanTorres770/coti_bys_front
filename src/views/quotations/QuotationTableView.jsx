@@ -4,10 +4,12 @@ import {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
 import useApp from "../../hooks/useApp.js";
 import {Transition} from "@headlessui/react";
+import {useAuth} from "../../hooks/useAuth.js";
 
 export default function QuotationTableView() {
 
     const {allBaggerQuotations} = useApp();
+    const {login} = useAuth();
 
     const location = useLocation()
 
@@ -51,7 +53,7 @@ export default function QuotationTableView() {
             leaveTo="opacity-0"
         >
 
-            <QuotationsTable columnNames={columnNames} data={filteredQuotations} viewDataPath={'/quotations/data'}></QuotationsTable>
+            <QuotationsTable columnNames={columnNames} data={filteredQuotations} viewDataPath={'/quotations/data'} isAdmin={login.isAdmin}></QuotationsTable>
 
         </Transition>
     );

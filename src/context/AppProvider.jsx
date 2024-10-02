@@ -55,6 +55,7 @@ const AppProvider = ({children}) => {
     const [idSelected, setIdSelected] = useState('')
     const [filterOptionsSelected, setFilterOptionsSelected] = useState([])
     const [validationErrors, setValidationErrors] = useState({})
+    const [dollarCurrency, setDollarCurrency] = useState(4221)
 
     // bagger quotation
     const [selectedService, setSelectedService] = useState({})
@@ -71,9 +72,6 @@ const AppProvider = ({children}) => {
     //  bagger product
     const [selectedVelocityServiceOption, setSelectedVelocityServiceOption] = useState({})
     const [selectedPackingMaterialServiceOption, setSelectedPackingMaterialServiceOption] = useState({})
-
-    const [isExternEntry, setIsExternEntry] = useState(false)
-
 
     const handleSidebarOption = (option) => {
         setSelectedSidebarOption(option)
@@ -378,8 +376,8 @@ const AppProvider = ({children}) => {
                 setManufacturerMaterialAdditionalSelected,
                 setAdditionalProductsSelected,
                 setServiceSelectedData,
-                isExternEntry,
-                setIsExternEntry
+                dollarCurrency,
+                setDollarCurrency
             }}
         >
             {children}

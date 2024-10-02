@@ -64,9 +64,9 @@ export default function Login() {
                                     validationErrors={validationErrors ? validationErrors.email ? validationErrors.email : null : null}
                                     inputId={'username'}
                                     type={'text'}
-                                    labelValue={'Correo electrónico*'}
+                                    labelValue={'Nombre de usuario *'}
                                     reference={emailRef}
-                                    placeholder={'Correo electrónico'}
+                                    placeholder={'Nombre de usuario'}
                                     textColor={'text-black'}>
                                 </InputForm>
                             </div>
@@ -82,7 +82,7 @@ export default function Login() {
                                     reference={passwordRef}
                                     placeholder={'Contraseña'}
                                     textColor={'text-black'}
-                                    additionalLabelLink={true}>
+                                    additionalLabelLink={false}>
                                 </InputForm>
                             </div>
                         </div>

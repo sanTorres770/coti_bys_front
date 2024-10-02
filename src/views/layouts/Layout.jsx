@@ -32,7 +32,7 @@ export default function Layout() {
                     },2500)
                 }
             })
-        },1800000)
+        },300000)
     }, []);
 
     return (

@@ -154,10 +154,6 @@ const router = createBrowserRouter([
                 path: '/quot/step_4',
                 element: <QuotationStep4/>
             },
-            {
-                path: '/quot/ext_step_1',
-                element: <QuotationStep1/>
-            },
         ]
     },
     {

@@ -2,7 +2,7 @@ import DashboardTableHead from "./DashboardTableHead.jsx";
 import DashboardTableRow from "./DashboardTableRow.jsx";
 import DashboardTableFooter from "./DashboardTableFooter.jsx";
 
-export default function DashboardTable({tableTitle,columnNames,data,priceResult}) {
+export default function DashboardTable({tableTitle,columnNames,data,priceResult,dollarEnabled,dollarCurrency}) {
     return (
         <div className="p-6 relative flex flex-col min-w-0 mb-4 lg:mb-0 break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded mt-6">
             <div className="rounded-t mb-0 px-0 border-0">
@@ -23,11 +23,11 @@ export default function DashboardTable({tableTitle,columnNames,data,priceResult}
                         <tbody>
                         {data.map(item => (
 
-                            <DashboardTableRow key={item.id} data={item}></DashboardTableRow>
+                            <DashboardTableRow key={item.id} data={item} dollarEnabled={dollarEnabled} dollarCurrency={dollarCurrency}></DashboardTableRow>
 
                         ))}
                         </tbody>
-                        <DashboardTableFooter priceResult={priceResult}></DashboardTableFooter>
+                        <DashboardTableFooter priceResult={priceResult} dollarEnabled={dollarEnabled} dollarCurrency={dollarCurrency}></DashboardTableFooter>
                     </table>
                 </div>
             </div>

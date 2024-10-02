@@ -24,7 +24,7 @@ export default function LogoutDropdown({userName, isAdmin, logout}) {
                     </div>
                     <div className="p-2 md:block text-left">
                         <h2 className="text-sm font-semibold text-gray-800">{userName && userName}</h2>
-                        <p className="text-xs text-gray-500">{isAdmin && 'Administrador'}</p>
+                        <p className="text-xs text-gray-500">{isAdmin ? 'Administrador' : 'Usuario'}</p>
                     </div>
                 </Menu.Button>
             </div>
@@ -45,7 +45,7 @@ export default function LogoutDropdown({userName, isAdmin, logout}) {
                                 <p
                                     className={classNames(
                                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
+                                        'block px-4 py-2 text-sm cursor-pointer'
                                     )}
                                     onClick={() => logout()}
                                 >

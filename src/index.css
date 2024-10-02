@@ -154,7 +154,6 @@
 }
 
 
-
 .icon-filter.active{
     transform: rotate(360deg);
     transition: 500ms ease;
@@ -165,3 +164,12 @@
     transition: 500ms ease;
 }
 
+.body-bg{
+    min-height: 100vh;
+    height: 100%;
+    overflow: auto;
+    background-image: url('/index-bg.svg');
+    background-repeat: round;
+    background-attachment: fixed;
+    background-size: cover;
+}

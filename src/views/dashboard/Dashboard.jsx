@@ -1,6 +1,7 @@
 import {useEffect} from "react";
 import useApp from "../../hooks/useApp.js";
 import {toast} from "react-toastify";
+import {useAuth} from "../../hooks/useAuth.js";
 
 export default function Dashboard() {
 
@@ -8,6 +9,8 @@ export default function Dashboard() {
         getAllBaggerQuotation,
         allBaggerQuotations,
         handleSetNewBaggerQuotationLength} = useApp();
+
+    const {login} = useAuth()
 
     useEffect(() => {
 
@@ -38,7 +41,9 @@ export default function Dashboard() {
 
     return (
 
-        <div className="p-6">
+        login.isAdmin ?
+
+            <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                     <div
                         className="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
@@ -611,7 +616,9 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> :
+
+            <div className='text-lg text-gray-700 p-3'>Bienvenido {login.user.username}</div>
 
     );
 }

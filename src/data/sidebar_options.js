@@ -5,7 +5,8 @@ const sidebarOptions = [
         icon: 'm2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25',
         options: [],
         path: '/dashboard',
-        displayBadge: false
+        displayBadge: false,
+        authorize: ['admin']
 
     },
     {
@@ -17,22 +18,28 @@ const sidebarOptions = [
                 id: '1',
                 name: 'Nuevas',
                 path: '/quotations/created',
+                authorize: ['admin'],
                 displayBadge: true
             },
             {
                 id: '2',
-                name: 'Enviadas',
+                name: 'Completadas',
                 path: '/quotations/sent',
+                authorize: ['admin']
+
 
             },
             {
                 id: '3',
                 name: 'Todas',
                 path: '/quotations/all',
+                authorize: ['admin','user']
+
 
             }
         ],
-        displayBadge: true
+        displayBadge: true,
+        authorize: ['admin','user']
     },
     {
         id: '3',
@@ -43,15 +50,20 @@ const sidebarOptions = [
                 id: '4',
                 name: 'Crear nuevo',
                 path: '/supplies/create',
+                authorize: ['admin','user']
+
             },
             {
                 id: '5',
                 name: 'Editar insumo',
                 path: '/supplies/list',
+                authorize: ['admin','user']
+
 
             }
         ],
-        displayBadge: false
+        displayBadge: false,
+        authorize: ['admin']
     },
     {
         id: '4',
@@ -62,15 +74,30 @@ const sidebarOptions = [
                 id: '6',
                 name: 'Crear nuevo',
                 path: '/baggerProduct/create',
+                authorize: ['admin','user']
+
             },
             {
                 id: '7',
                 name: 'Listar todos',
                 path: '/baggerProduct/list',
+                authorize: ['admin','user']
+
 
             }
         ],
-        displayBadge: false
+        displayBadge: false,
+        authorize: ['admin']
+    },
+    {
+        id: '5',
+        name: 'Nueva cotización',
+        icon: 'M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z',
+        options: [],
+        path: '/quot/step_1',
+        displayBadge: false,
+        authorize: ['admin','user']
+
     },
 
 ]

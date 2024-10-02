@@ -13,8 +13,6 @@ export default function QuotationStep1() {
         velocityOptionSelected,
         services,
         getAllServices,
-        isExternEntry,
-        setIsExternEntry,
         serviceSelectedData,
         setServiceSelectedData,
         getServiceById,
@@ -76,11 +74,6 @@ export default function QuotationStep1() {
         setCountryQuotationSelected(null)
         setStateQuotationSelected(null)
         setTownQuotationSelected(null)
-
-        if (location.pathname === '/quot/ext_step_1'){
-
-            setIsExternEntry(true)
-        }
 
     }, []);
 

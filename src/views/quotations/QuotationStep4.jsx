@@ -1,5 +1,5 @@
 import {createRef, Fragment, useEffect, useState} from "react";
-import {Button, Dialog, DialogPanel, DialogTitle, Transition, TransitionChild} from "@headlessui/react";
+import {Button, Transition} from "@headlessui/react";
 import useApp from "../../hooks/useApp.js";
 import {Link, useNavigate} from "react-router-dom";
 import InputForm from "../../components/layout/InputForm.jsx";
@@ -34,8 +34,7 @@ export default function QuotationStep4() {
         manufacturerMaterialAdditionalSelected,
         brandsSelected,
         serviceSelectedData,
-        saveNewBaggerQuotation,
-        isExternEntry} = useApp();
+        saveNewBaggerQuotation} = useApp();
 
     const businessNameRef = createRef()
     const contactNameRef = createRef()
@@ -100,7 +99,7 @@ export default function QuotationStep4() {
 
             if (data.status === 200 || data.status === 201) {
                 toast.success(`La cotización ${data.data.consecutive} se creó correctamente!`)
-                navigate(isExternEntry ? '/quot/ext_step_1' : '/quot/step_1')
+                navigate('/quot/step_1')
             }else {
                 toast.error('Error en el proceso.')
             }

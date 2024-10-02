@@ -8,7 +8,7 @@ export default function ProductOption({option,onClick,selectedOption,arraySelect
     return (
 
         <div key={name} onClick={onClick ? onClick : null}
-             className={`${selectedOption !== null ? selectedOption === id ? 'bg-indigo-100 shadow-sm shadow-indigo-300' : '' : null} 
+             className={`me-2 ${selectedOption !== null ? selectedOption === id ? 'bg-indigo-100 shadow-sm shadow-indigo-300' : '' : null} 
              ${arraySelection !== null ? arraySelection.some(selection => selection.id === id) ? 'bg-indigo-100 shadow-sm shadow-indigo-300' : '' : null}
              relative pl-16 hover:bg-indigo-100 hover:cursor-pointer lg:py-3 rounded-md hover:shadow-sm hover:shadow-indigo-300`}>
             {(selectedOption === id || (arraySelection !== null && arraySelection.some(selection => selection.id === id))) && (

@@ -13,10 +13,14 @@ const columnNames = [
     },
     {
         id: '4',
-        name: 'Estado'
+        name: 'Tipo'
     },
     {
         id: '5',
+        name: 'Estado'
+    },
+    {
+        id: '6',
         name: ''
     },
 ]
