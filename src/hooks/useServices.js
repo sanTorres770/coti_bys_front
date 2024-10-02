@@ -1,5 +1,4 @@
 import customAxios from "../config/axios.js";
-import useApp from "./useApp.js";
 import {useState} from "react";
 
 export const useServices = () => {
@@ -17,7 +16,7 @@ export const useServices = () => {
             setServices(data)
 
         }catch (error){
-            console.log(error)
+
         }
     }
 
@@ -30,7 +29,7 @@ export const useServices = () => {
             setServiceSelectedData(data)
 
         }catch (error){
-            console.log(error)
+
         }
     }
 

@@ -12,6 +12,7 @@ import {useBaggerQuotations} from "../hooks/useBaggerQuotations.js";
 import {useServiceOptions} from "../hooks/useServiceOptions.js";
 import {useSupplies} from "../hooks/useSupplies.js";
 import {useBaggerProducts} from "../hooks/useBaggerProducts.js";
+import {useAuth} from "../hooks/useAuth.js";
 
 
 ////////////////////////////////////////////////
@@ -54,6 +55,7 @@ const AppProvider = ({children}) => {
     const [idSelected, setIdSelected] = useState('')
     const [filterOptionsSelected, setFilterOptionsSelected] = useState([])
     const [validationErrors, setValidationErrors] = useState({})
+    const [dollarCurrency, setDollarCurrency] = useState(4221)
 
     // bagger quotation
     const [selectedService, setSelectedService] = useState({})
@@ -70,7 +72,6 @@ const AppProvider = ({children}) => {
     //  bagger product
     const [selectedVelocityServiceOption, setSelectedVelocityServiceOption] = useState({})
     const [selectedPackingMaterialServiceOption, setSelectedPackingMaterialServiceOption] = useState({})
-
 
     const handleSidebarOption = (option) => {
         setSelectedSidebarOption(option)
@@ -374,7 +375,9 @@ const AppProvider = ({children}) => {
                 setBrandsSelected,
                 setManufacturerMaterialAdditionalSelected,
                 setAdditionalProductsSelected,
-                setServiceSelectedData
+                setServiceSelectedData,
+                dollarCurrency,
+                setDollarCurrency
             }}
         >
             {children}

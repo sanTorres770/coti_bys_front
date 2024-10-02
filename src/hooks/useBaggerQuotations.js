@@ -12,6 +12,13 @@ export const useBaggerQuotations = () => {
     const [totalQuotationPrice, setTotalQuotationPrice] = useState(0)
     const [newBaggerQuotationLength, setNewBaggerQuotationLength] = useState(0)
 
+    const config = () => {
+        return {
+            headers: {
+                Authorization : `Bearer ${sessionStorage.getItem('token')}`
+            }
+        }
+    }
 
     const saveNewBaggerQuotation = async (newBaggerQuotation) => {
 
@@ -23,7 +30,7 @@ export const useBaggerQuotations = () => {
 
         try {
 
-            const {data} = await customAxios('/api/baggerQuotations')
+            const {data} = await customAxios('/api/baggerQuotations',config())
 
             handleSetNewBaggerQuotationLength(data.filter(item => item.status === 'NE').length)
 
@@ -31,7 +38,7 @@ export const useBaggerQuotations = () => {
             setAllBaggerQuotations(data)
 
         }catch (error) {
-            console.log(error)
+
         }
 
     }
@@ -40,7 +47,7 @@ export const useBaggerQuotations = () => {
 
         try {
 
-            const {data} = await customAxios(`/api/bagger/calculate/${baggerQuotationId}/${consecutive}`)
+            const {data} = await customAxios(`/api/bagger/calculate/${baggerQuotationId}/${consecutive}`,config())
 
             setBaggerQuotationDataSelected(data)
 
@@ -56,7 +63,7 @@ export const useBaggerQuotations = () => {
 
 
         }catch (error) {
-            console.log(error)
+
         }
 
     }

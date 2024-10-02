@@ -5,9 +5,17 @@ export const useSupplies = () => {
 
     const [allSupplies, setAllSupplies] = useState([]);
 
+    const config = () => {
+        return {
+            headers: {
+                Authorization : `Bearer ${sessionStorage.getItem('token')}`
+            }
+        }
+    }
+
     const saveNewSupply = async (newSupply) => {
 
-        return await customAxios.post('/api/supplies',newSupply)
+        return await customAxios.post('/api/supplies',newSupply,config())
 
     }
 
@@ -15,13 +23,13 @@ export const useSupplies = () => {
 
         try {
 
-            const {data} = await customAxios('/api/supplies')
+            const {data} = await customAxios('/api/supplies',config())
 
             setAllSupplies(data)
 
 
         }catch (error) {
-            console.log(error)
+
         }
 
     }
@@ -30,18 +38,18 @@ export const useSupplies = () => {
 
         try {
 
-            const {data} = await customAxios(`/api/supplies/${id}`)
+            const {data} = await customAxios(`/api/supplies/${id}`,config())
 
 
         }catch (error) {
-            console.log(error)
+
         }
 
     }
 
     const updateSupply = async (supply,id) => {
 
-        return await customAxios.put(`/api/supplies/${id}`,supply)
+        return await customAxios.put(`/api/supplies/${id}`,supply,config())
 
     }
 

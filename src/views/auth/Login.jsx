@@ -1,37 +1,46 @@
-import { Link } from 'react-router-dom'
-import {createRef, useEffect, useState} from "react";
-import ValidationFormAlert from "../../components/alerts/ValidationFormAlert.jsx";
+import {Link, Navigate} from 'react-router-dom'
+import {createRef, useState} from "react";
 import InputForm from "../../components/layout/InputForm.jsx";
-/*import {useAuth} from "../../hooks/useAuth.js";*/
+import {useAuth} from "../../hooks/useAuth.js";
+import FormSubmitButton from "../../components/button/FormSubmitButton.jsx";
+import LoadingAlert from "../../components/alerts/LoadingAlert.jsx";
+
 
 export default function Login() {
 
     const emailRef = createRef();
     const passwordRef = createRef();
 
-    const [errores, setErrores] = useState([])
+    const [validationErrors, setValidationErrors] = useState({})
+    const [isLoading, setIsLoading] = useState(false)
 
-    /*const { login } = useAuth({
-         middleware: 'guest',
-         url: '/'
-    })*/
+    const {login,handlerLogin} = useAuth()
 
-    const handleSubmit = async e => {
+    const handleSubmit = e => {
+
         e.preventDefault();
 
-        const form = {
-            email: emailRef.current.value,
-            password: passwordRef.current.value,
-        }
+        setValidationErrors({})
 
-        login(form,setErrores)
+        if (emailRef.current.value.trim().length === 0 || passwordRef.current.value.trim().length === 0) {
 
-        if (errores){
+            if (passwordRef.current.value.length === 0){
+                setValidationErrors({...validationErrors, password: 'La contraseña no puede estar vacía'})
+            }
 
-            window.scroll({
-                top: 100,
-                behavior: 'smooth'
-            })
+            if (emailRef.current.value.length === 0){
+                setValidationErrors({...validationErrors, email: 'El correo no puede estar vacío'})
+            }
+
+
+        }else {
+
+            const form = {
+                username: emailRef.current.value,
+                password: passwordRef.current.value,
+            }
+
+            handlerLogin(form, setIsLoading)
         }
     }
 
@@ -39,53 +48,65 @@ export default function Login() {
     return (
 
         <>
+            {login.isAuth ?
 
-            {errores ? errores.map((error, i) => <ValidationFormAlert key={i}>{error}</ValidationFormAlert>)  : null }
+                <Navigate to={'/dashboard'}></Navigate>
 
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" action="#" method="POST">
-                    <div>
-                        <div className="mt-2">
-                            <InputForm
-                                inputId={'username'}
-                                type={'text'}
-                                labelValue={'Correo electrónico*'}
-                                textColor={'text-black'}>
-                            </InputForm>
+                :
+
+                !isLoading ?
+
+                    <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                    <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+                        <div>
+                            <div className="mt-2">
+                                <InputForm
+                                    validationErrors={validationErrors ? validationErrors.email ? validationErrors.email : null : null}
+                                    inputId={'username'}
+                                    type={'text'}
+                                    labelValue={'Nombre de usuario *'}
+                                    reference={emailRef}
+                                    placeholder={'Nombre de usuario'}
+                                    textColor={'text-black'}>
+                                </InputForm>
+                            </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <div className="mt-2">
-                            <InputForm
-                                inputId={'username'}
-                                type={'text'}
-                                labelValue={'Contraseña *'}
-                                textColor={'text-black'}
-                                additionalLabelLink={true}>
-                            </InputForm>
+                        <div>
+                            <div className="mt-2">
+                                <InputForm
+                                    validationErrors={validationErrors ? validationErrors.password ? validationErrors.password : null : null}
+                                    inputId={'password'}
+                                    type={'password'}
+                                    labelValue={'Contraseña *'}
+                                    reference={passwordRef}
+                                    placeholder={'Contraseña'}
+                                    textColor={'text-black'}
+                                    additionalLabelLink={false}>
+                                </InputForm>
+                            </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <button
-                            type="submit"
-                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                            Iniciar sesión
-                        </button>
-                    </div>
-                </form>
+                        <div>
+                            <FormSubmitButton handleSubmit={handleSubmit}
+                                              value={'Iniciar sesión'}
+                            ></FormSubmitButton>
+                        </div>
+                    </form>
 
-                <p className="mt-10 text-center text-sm text-gray-500">
-                    Deseas cotizar nuestros servicios?{' '}
-                    <Link to="/quot/step_1" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                        Hazlo acá
-                    </Link>
-                </p>
-            </div>
+                    <p className="mt-10 text-center text-sm text-gray-500">
+                        Deseas cotizar nuestros servicios?{' '}
+                        <Link to="/quot/step_1"
+                              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                            Hazlo acá
+                        </Link>
+                    </p>
+                </div>
 
+                    :
 
+                    <LoadingAlert></LoadingAlert>
+            }
         </>
     )
 }

@@ -2,7 +2,7 @@ import SelectListBox from "../../components/layout/SelectListBox.jsx";
 import {Fragment, useEffect} from "react";
 import {Transition} from "@headlessui/react";
 import useApp from "../../hooks/useApp.js";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import ProductOptionsSection from "../../components/products/ProductOptionsSection.jsx";
 
 
@@ -30,6 +30,7 @@ export default function QuotationStep1() {
 
 
     const navigate = useNavigate()
+    const location = useLocation()
 
     useEffect(() => {
         getAllServices()
@@ -73,6 +74,7 @@ export default function QuotationStep1() {
         setCountryQuotationSelected(null)
         setStateQuotationSelected(null)
         setTownQuotationSelected(null)
+
     }, []);
 
 

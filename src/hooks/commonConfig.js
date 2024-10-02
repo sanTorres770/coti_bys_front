@@ -7,12 +7,12 @@ export const commonConfig = () => {
         switch (status) {
 
             case 'NE' : {
-                stateToShow = 'POR ENVIAR'
+                stateToShow = 'POR COMPLETAR'
                 break
             }
 
             case 'EN' : {
-                stateToShow = 'ENVIADA'
+                stateToShow = 'COMPLETADA'
                 break
             }
 
@@ -54,15 +54,20 @@ export const commonConfig = () => {
         return string.charAt(0).toUpperCase()
     }
 
-    const formatPriceToCurrency = (price) => {
+    const formatPriceToCurrency = (price,dollarEnabled) => {
+
+        console.log(price)
 
         if (isNaN(Number(price))){
 
             return ''
         }
 
-        return new Intl.NumberFormat('es-CO',{
+        return dollarEnabled ? new Intl.NumberFormat('es-CO',{
             style: 'currency', currency: 'COP' }).format(Number(price))
+            :
+            new Intl.NumberFormat('fr-FR',{
+                style: 'currency', currency: 'USD' }).format(Number(price))
     }
 
     return {

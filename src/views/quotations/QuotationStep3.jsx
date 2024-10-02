@@ -39,7 +39,7 @@ export default function QuotationStep3() {
     useEffect(() => {
 
         window.scrollBy({
-            top: 500,
+            top: 0,
             left: 0,
             behavior: "smooth",
         })
@@ -60,7 +60,7 @@ export default function QuotationStep3() {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
             >
-                <div className="bg-white py-5 sm:py-5">
+                <div className="bg-white py-5">
                     <div className="mx-auto max-w-7xl px-6 lg:px-8">
 
                         <ProductOptionsSection

@@ -1,10 +1,13 @@
 import useApp from "../../hooks/useApp.js";
 import {buildStyles, CircularProgressbar} from "react-circular-progressbar";
 import {commonConfig} from "../../hooks/commonConfig.js";
-import {Transition} from "@headlessui/react";
+import {Switch, Transition} from "@headlessui/react";
 import DashboardTable from "../../components/dashboard/DashboardTable.jsx";
 import {Link, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useState, Fragment} from "react";
+import {useAuth} from "../../hooks/useAuth.js";
+import clsx from "clsx";
+import InputForm from "../../components/layout/InputForm.jsx";
 
 export default function QuotationDataView() {
 
@@ -17,11 +20,17 @@ export default function QuotationDataView() {
         setSelectedVelocityServiceOption,
         setSelectedPackingMaterialServiceOption,
         totalQuotationPrice,
-        getBaggerProductById} = useApp();
+        getBaggerProductById,
+        dollarCurrency,
+        setDollarCurrency} = useApp();
+
+    const {login} = useAuth();
 
     const {formatPriceToCurrency} = commonConfig()
 
     const [progress, setProgress] = useState(0)
+
+    const [dollarEnabled, setDollarEnabled] = useState(false)
 
     const navigate = useNavigate()
 
@@ -51,15 +60,18 @@ export default function QuotationDataView() {
 
     }
 
+    const handleChangeDollarValue = (e) => {
+        setDollarCurrency(Number(e.target.value))
+    }
 
-    useEffect(() => {
+
+    /*useEffect(() => {
 
         setTimeout(() => {
             setProgress(baggerQuotation !== undefined && baggerQuotation.status === 'NE' ? 50 : 100)
         }, 900)
 
-    }, []);
-
+    }, []);*/
 
     return (
 
@@ -117,7 +129,7 @@ export default function QuotationDataView() {
 
                         <div className="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-2 md:gap-6 md:space-y-0">
 
-                            <div className='bg-white rounded-md border border-gray-100 p-4 shadow-md shadow-black/5'>
+                            {/*<div className='bg-white rounded-md border border-gray-100 p-4 shadow-md shadow-black/5'>
                                 <div
                                     className="flex justify-start items-center gap-2 w-full h-10 rounded-full bg-primary-100 bg-primary-900">
                                     <svg className="w-5 h-5 text-primary-600 lg:w-6 lg:h-6 text-primary-300"
@@ -137,7 +149,7 @@ export default function QuotationDataView() {
                                                          })}
                                     />
                                 </div>
-                            </div>
+                            </div>*/}
 
                             <div className='bg-white rounded-md border border-gray-100 p-4 shadow-md shadow-black/5'>
                                 <div
@@ -324,23 +336,32 @@ export default function QuotationDataView() {
                             )}
                         </div>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                            <DashboardTable
-                                tableTitle={'Insumos partes control y eléctricas'}
-                                columnNames={columnNamesSuppliesTable}
-                                data={electronicSupplies}
-                                priceResult={electronicSuppliesPriceResult}
-                            >
-                            </DashboardTable>
+                        {login.isAdmin &&
 
-                            <DashboardTable
-                                tableTitle={'Insumos partes neumática'}
-                                columnNames={columnNamesSuppliesTable}
-                                data={pneumaticSupplies}
-                                priceResult={pneumaticSuppliesPriceResult}
-                            >
-                            </DashboardTable>
-                        </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                                <DashboardTable
+                                    tableTitle={'Insumos partes control y eléctricas'}
+                                    columnNames={columnNamesSuppliesTable}
+                                    data={electronicSupplies}
+                                    priceResult={electronicSuppliesPriceResult}
+                                    dollarEnabled={dollarEnabled}
+                                    dollarCurrency={dollarCurrency}
+                                >
+                                </DashboardTable>
+
+                                <DashboardTable
+                                    tableTitle={'Insumos partes neumática'}
+                                    columnNames={columnNamesSuppliesTable}
+                                    data={pneumaticSupplies}
+                                    priceResult={pneumaticSuppliesPriceResult}
+                                    dollarEnabled={dollarEnabled}
+                                    dollarCurrency={dollarCurrency}
+                                >
+                                </DashboardTable>
+                            </div>
+
+                        }
 
                         <div className="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md mt-6">
                             <div
@@ -351,7 +372,44 @@ export default function QuotationDataView() {
                                           d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
                                           clipRule="evenodd"></path>
                                 </svg>
-                                <h3 className="text-xl font-bold text-gray-400">Producto de cotización</h3>
+                                <h3 className="text-xl font-bold text-gray-400">Producto cotizado</h3>
+
+                                {login.isAdmin && (
+
+                                    <>
+
+                                        <label htmlFor="dollarId" className='ms-10'>Dolar</label>
+
+                                        <InputForm inputId={'dollarId'}
+                                                   type={'number'}
+                                                   placeholder={'Dolar'}
+                                                   defaultValue={dollarCurrency}
+                                                   onChangeFunction={handleChangeDollarValue}
+                                        >
+                                        </InputForm>
+
+                                        <Switch checked={dollarEnabled} onChange={setDollarEnabled} as={Fragment}>
+                                            {({ checked, disabled }) => (
+                                                <button
+                                                    className={clsx(
+                                                        'group inline-flex h-6 w-11 items-center rounded-full',
+                                                        checked ? 'bg-blue-600' : 'bg-gray-200',
+                                                        disabled && 'cursor-not-allowed opacity-50'
+                                                    )}
+                                                >
+                                                    <span className="sr-only">Enable notifications</span>
+                                                    <span
+                                                        className={clsx('size-4 rounded-full bg-white transition', checked ? 'translate-x-6' : 'translate-x-1')}
+                                                    />
+                                                </button>
+
+                                            )}
+                                        </Switch>
+
+                                    </>
+
+                                )}
+
                             </div>
                             <div className="overflow-x-auto">
                                 <table className="w-full min-w-[540px]">
@@ -363,11 +421,15 @@ export default function QuotationDataView() {
                                                 Material de fabricación
                                             </span>
                                         </td>
-                                        <td className='py-2 border-b border-b-gray-50'>
+
+                                        {login.isAdmin &&
+                                            <td className='py-2 border-b border-b-gray-50'>
                                             <span className='text-sm font-medium text-gray-400'>
                                                 Precio de fabricación
                                             </span>
-                                        </td>
+                                            </td>
+                                        }
+
                                         <td className='py-2 border-b border-b-gray-50'>
                                             <span className='text-sm font-medium text-gray-400'>
                                                 Precio total (IE+IN+PF)
@@ -378,28 +440,40 @@ export default function QuotationDataView() {
                                     <tbody>
                                     <tr>
                                         <td className="py-2 border-b border-b-gray-50">
-                                            <Link to={'/baggerProduct/edit'}
-                                                  onClick={() => handleSelectBaggerProductData(baggerProduct.id)}
-                                                  className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
-                                            >
-                                                {baggerProduct.name}
-                                            </Link>
+                                            {login.isAdmin ?
+
+                                                <Link to={'/baggerProduct/edit'}
+                                                      onClick={() => handleSelectBaggerProductData(baggerProduct.id)}
+                                                      className="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate"
+                                                >
+                                                    {baggerProduct.name}
+                                                </Link> :
+
+                                                <span className="text-gray-600 text-sm font-medium truncate"
+                                                >
+                                                    {baggerProduct.name}
+                                                </span>
+                                            }
                                         </td>
                                         <td className="py-2 border-b border-b-gray-50">
                                             <span className="text-gray-600 text-sm font-medium truncate">
                                                 {baggerQuotation.selectedBaggerProduct.manufacturerMaterial.name}
                                             </span>
                                         </td>
+
+                                        {login.isAdmin &&
+
+                                            <td className="py-2 border-b border-b-gray-50">
+                                                <span className="text-gray-600 text-sm font-medium truncate">
+                                                    {baggerQuotation.selectedBaggerProduct.manufacturerMaterial.type === 'INOX' ?
+                                                        formatPriceToCurrency(dollarEnabled ? baggerProduct.stainlessSteelPrice : (baggerProduct.stainlessSteelPrice / dollarCurrency), dollarEnabled) :
+                                                        formatPriceToCurrency(dollarEnabled ? baggerProduct.carbonSteelPrice : (baggerProduct.carbonSteelPrice / dollarCurrency), dollarEnabled)}
+                                                </span>
+                                            </td>
+                                        }
                                         <td className="py-2 border-b border-b-gray-50">
                                             <span className="text-gray-600 text-sm font-medium truncate">
-                                                {baggerQuotation.selectedBaggerProduct.manufacturerMaterial.type === 'INOX' ?
-                                                    formatPriceToCurrency(baggerProduct.stainlessSteelPrice) :
-                                                    formatPriceToCurrency(baggerProduct.carbonSteelPrice)}
-                                            </span>
-                                        </td>
-                                        <td className="py-2 border-b border-b-gray-50">
-                                            <span className="text-gray-600 text-sm font-medium truncate">
-                                                {formatPriceToCurrency(totalQuotationPrice)}
+                                                {formatPriceToCurrency(dollarEnabled ? totalQuotationPrice : (totalQuotationPrice / dollarCurrency), dollarEnabled)}
                                             </span>
                                         </td>
                                     </tr>

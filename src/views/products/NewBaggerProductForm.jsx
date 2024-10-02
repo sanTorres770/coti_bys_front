@@ -10,6 +10,8 @@ import ComboboxSelect from "../../components/combobox/ComboboxSelect.jsx";
 import {commonConfig} from "../../hooks/commonConfig.js";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
+import FormSubmitButton from "../../components/button/FormSubmitButton.jsx";
+import LoadingAlert from "../../components/alerts/LoadingAlert.jsx";
 
 export default function NewBaggerProductForm() {
 
@@ -41,6 +43,8 @@ export default function NewBaggerProductForm() {
     const [packingMaterialOptions, setPackingMaterialOptions] = useState([])
     const [assignedSupplies, setAssignedSupplies] = useState([])
     const [supplyAmounts, setSupplyAmounts] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+
 
     const handleFocusOutUnitInoxInput = (e) => {
 
@@ -76,6 +80,7 @@ export default function NewBaggerProductForm() {
         e.preventDefault()
 
         setSupplyAmounts([])
+        setIsLoading(true)
 
         assignedSupplies.map((supply,index) => {
 
@@ -102,10 +107,10 @@ export default function NewBaggerProductForm() {
             active: true
         }
 
-        saveNewBaggerProduct(newBaggerProduct).then((response)=>{
+        saveNewBaggerProduct(newBaggerProduct).then(data => {
 
-            if (response){
-                toast.success('El producto de ensacadora se creó correctamente!')
+            if (data.status === 200 || data.status === 201) {
+                toast.success(`El producto ${data.data.name} se creó correctamente!`)
 
                 const buttonToClose = document.getElementById(`sidebar_option_${selectedSidebarOption.id}`);
 
@@ -119,7 +124,35 @@ export default function NewBaggerProductForm() {
                 toast.error('Error en el proceso.')
             }
 
-        })
+        }).catch(error => {
+
+
+            if (error.code === "ERR_BAD_REQUEST"){
+
+                switch (error.response.status) {
+
+                    case 400: {
+                        setErrores(Object.values(error.response.data))
+                        setValidationErrors(error.response.data)
+                        toast.error('Revisa los campos que faltan por diligenciar en el formulario.')
+                        break;
+                    }
+
+                    case 403: {
+                        toast.error('No autorizado.')
+                        break;
+                    }
+
+                }
+
+            }
+
+            if (error.code === "ERR_NETWORK"){
+                toast.error('Error de conexión.')
+            }
+
+
+        }).finally(() => setIsLoading(false))
 
     }
 
@@ -263,13 +296,13 @@ export default function NewBaggerProductForm() {
                             </div>
 
                             <div className="sm:col-span-1 mb-5">
-                                <button
-                                    type="submit"
-                                    onClick={() => handleSubmit}
-                                    className="flex w-full justify-center rounded-md bg-indigo-600 mt-0 md:mt-6 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                                >
-                                Crear producto
-                                </button>
+                                {isLoading ?
+                                    <LoadingAlert></LoadingAlert>
+
+                                    :
+
+                                    <FormSubmitButton handleSubmit={handleSubmit} value={'Crear producto'}></FormSubmitButton>
+                                }
                             </div>
 
                         </div>

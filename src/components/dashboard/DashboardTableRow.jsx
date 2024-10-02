@@ -1,6 +1,6 @@
 import {commonConfig} from "../../hooks/commonConfig.js";
 
-export default function DashboardTableRow({data,priceResult}) {
+export default function DashboardTableRow({data,dollarEnabled,dollarCurrency}) {
 
     const {formatPriceToCurrency} = commonConfig()
 
@@ -11,7 +11,7 @@ export default function DashboardTableRow({data,priceResult}) {
                 <th className="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">{data.description}</th>
                 <td className="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{data.maker.name}</td>
                 <td className="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{data.supplyAmount}</td>
-                <td className="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{formatPriceToCurrency(data.totalPrice)}</td>
+                <td className="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{formatPriceToCurrency(dollarEnabled ? data.totalPrice : (data.totalPrice / dollarCurrency), dollarEnabled)}</td>
             </tr>
 
 

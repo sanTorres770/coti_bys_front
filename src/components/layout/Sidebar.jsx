@@ -1,12 +1,12 @@
-import Option from "../option/Option.jsx";
 import useApp from "../../hooks/useApp.js";
-/*import {useAuth} from "../../hooks/useAuth.js";*/
 import {Link} from "react-router-dom";
 import SidebarDisclosure from "../disclosure/SidebarDisclosure.jsx";
 import {useEffect} from "react";
+import {useAuth} from "../../hooks/useAuth.js";
 export default function Sidebar() {
 
     const {sidebarVisible,handleClickSidebarVisibility,sidebarOptions,setSelectedSidebarOption} = useApp();
+    const {login} = useAuth()
 
     /*const {logout, user} = useAuth({middleware:'auth'})*/
 
@@ -28,7 +28,7 @@ export default function Sidebar() {
                 <ul className="mt-4">
                     {/*<span className="text-gray-400 font-bold">ADMIN</span>*/}
                     <li className="mb-1 group">
-                        <SidebarDisclosure options={sidebarOptions}></SidebarDisclosure>
+                        <SidebarDisclosure options={sidebarOptions} isAdmin={login.isAdmin}></SidebarDisclosure>
                     </li>
                 </ul>
             </div>

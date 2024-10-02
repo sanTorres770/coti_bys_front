@@ -9,12 +9,19 @@ export const useServiceOptions = () => {
 
         try {
 
-            const {data} = await customAxios('/api/serviceOptions/types',{params:{types:types}})
+            const {data} = await customAxios('/api/serviceOptions/types',
+                {
+                    params:{types:types},
+                    headers: {
+                        Authorization : `Bearer ${sessionStorage.getItem('token')}`,
+                    }
+                })
 
             setServiceOptionsByType(data)
 
         }catch (error){
             console.log(error)
+
         }
     }
 
